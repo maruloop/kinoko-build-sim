@@ -27,17 +27,22 @@
 }
 
 .equipments-counter button {
-  padding: 5px 15px;
-  font-size: 1.2rem;
+  padding: clamp(4px, 1vw, 8px) clamp(10px, 2vw, 16px);
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
+  border: 1px solid #999;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .equipments-counter span {
-  margin: 0 10px;
-  font-size: 1.2rem;
+  margin: 0 clamp(6px, 1.5vw, 12px);
+  font-size: clamp(1rem, 2vw, 1.4rem);
 }
 
 .equipments-summary {
-  margin-top: 20px;
-  font-size: 1.3rem;
+  margin-top: clamp(16px, 3vw, 32px);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
   font-weight: bold;
 }

@@ -1,15 +1,15 @@
 .statue-container {
     text-align: center;
-    margin: 20px;
+    margin: clamp(12px, 4vw, 32px);
 }
 
 .statue-option-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 10px auto;
-    max-width: 400px;
-    padding: 10px;
+    margin: clamp(6px, 2vw, 16px) auto;
+    max-width: clamp(280px, 70vw, 500px);
+    padding: clamp(8px, 2vw, 16px);
     border: 1px solid #ddd;
     border-radius: 8px;
     background: #f9f9f9;
@@ -18,7 +18,7 @@
 .statue-option-name {
     flex-grow: 1;
     text-align: left;
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
 
 .statue-counter {
@@ -27,17 +27,26 @@
 }
 
 .statue-counter button {
-    padding: 5px 15px;
-    font-size: 1.2rem;
+    padding: clamp(4px, 1vw, 8px) clamp(10px, 2vw, 16px);
+    font-size: clamp(0.9rem, 2vw, 1.4rem);
+    border: 1px solid #999;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.statue-counter button:hover {
+    background-color: #e0e0e0;
 }
 
 .statue-counter span {
-    margin: 0 10px;
-    font-size: 1.2rem;
+    margin: 0 clamp(6px, 1.5vw, 12px);
+    font-size: clamp(1rem, 2vw, 1.4rem);
 }
 
 .statue-summary {
-    margin-top: 20px;
-    font-size: 1.3rem;
+    margin-top: clamp(16px, 3vw, 32px);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
     font-weight: bold;
 }

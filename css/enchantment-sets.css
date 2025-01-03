@@ -1,12 +1,14 @@
 .enchantment-sets-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 45vw, 600px), 1fr));
     gap: 12px;
+    justify-content: center;
+    padding: clamp(8px, 2vw, 20px);
 }
 
 #enchantment-sets-container h3 {
-    margin-bottom: 12px;
-    font-size: 1.2em;
+    margin-bottom: clamp(8px, 1.5vw, 16px);
+    font-size: clamp(1em, 2vw, 1.4em);
     color: #444;
     text-align: left;
 }
@@ -15,29 +17,28 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 12px;
+    padding: clamp(8px, 2vw, 14px) clamp(10px, 3vw, 20px);
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
+    max-width: clamp(280px, 90vw, 600px);
 }
 
 .enchantment-set-item span {
-    font-size: 16px;
+    font-size: clamp(14px, 1.5vw, 18px);
     font-weight: 500;
-    min-width: 160px;
+    min-width: clamp(120px, 30vw, 200px);
 }
 
 .enchantment-set-item .checkbox-group {
     display: flex;
-    gap: 4px;
+    gap: clamp(4px, 1vw, 8px);
 }
 
 .enchantment-set-item label {
     cursor: pointer;
-    font-size: 14px;
-    padding: 6px 12px;
+    font-size: clamp(12px, 1.2vw, 16px);
+    padding: clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px);
     border: 1px solid #999;
     border-radius: 6px;
     user-select: none;
@@ -48,7 +49,7 @@
     display: none;
 }
 
-.enchantment-set-item input[type="checkbox"]:checked+label {
+.enchantment-set-item input[type="checkbox"]:checked + label {
     background-color: #007bff;
     color: white;
     border-color: #007bff;

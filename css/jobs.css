@@ -1,17 +1,21 @@
 .job-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 200px), 1fr));
+  gap: clamp(10px, 2vw, 20px);
+  justify-content: center;
+  margin: clamp(10px, 3vw, 30px) 0;
 }
 
 .job-options label {
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  justify-content: center;
+  padding: clamp(8px, 1.5vw, 16px) clamp(12px, 3vw, 24px);
   border: 2px solid #ccc;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  font-size: clamp(14px, 1.2vw, 18px);
 }
 
 .job-options input[type="radio"] {

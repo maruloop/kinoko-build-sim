@@ -1,30 +1,33 @@
 .relics-container {
     text-align: center;
-    margin: 20px;
+    margin: clamp(12px, 4vw, 32px);
 }
 
 .relics-selected {
-    margin-bottom: 30px;
+    justify-content: center;
+    margin-bottom: clamp(20px, 5vw, 40px);
 }
 
 .relics-list {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    min-height: 70px;
-}
-
-.relic-group {
     display: grid;
-    grid-template-columns: repeat(5, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
     justify-content: center;
-    gap: 16px;
-    width: fit-content;
+    gap: clamp(2px, 3vw, 5px);
+    padding: 0 20%;
+    max-width: 100%;
     margin: 0 auto;
 }
 
+.relic-group {
+    display: flex;
+    justify-content: center;
+    gap: clamp(15px, 3vw, 20px);
+    width: 100%;
+    margin: 2vw auto;
+}
+
 .relic-icon {
-    width: 64px;
+    width: clamp(48px, 6vw, 80px);
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 8px;
@@ -45,10 +48,11 @@
 .relic-icon.empty {
     display: inline-block;
     margin: 2px;
-    width: 64px;
-    height: 64px;
+    width: calc(clamp(48px, 6vw, 80px) - 6px);
+    height: calc(clamp(48px, 6vw, 80px) - 6px);
     background-color: #f0f0f0;
-    outline: 3px solid #cccccc;
-    outline-offset: 2px;
+    border: 3px solid #cccccc;
+    border-radius: 8px;
     box-sizing: border-box;
 }
+
