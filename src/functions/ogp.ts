@@ -1,5 +1,5 @@
 /// <reference types="@cloudflare/workers-types" />
-// import { ImageResponse } from 'workers-og';
+import { ImageResponse } from 'workers-og';
 
 export const onRequestGet: PagesFunction<{ OGP_CACHE: KVNamespace }> = async (context) => {
   const { request, env } = context;
@@ -8,39 +8,37 @@ export const onRequestGet: PagesFunction<{ OGP_CACHE: KVNamespace }> = async (co
   const title = sanitizeTitle(url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター');
   const cacheKey = `ogp-${url.searchParams.get('title') || 'default'}`;
 
-  return new Response(cacheKey, {'status': 200});
+  try {
+    const cachedResponse = await env.OGP_CACHE.get(cacheKey, 'stream');
+    if (cachedResponse) {
+      return new Response(cachedResponse, {
+        headers: {
+          'Content-Type': 'image/png',
+          'Cache-Control': 'public, max-age=86400',
+        }
+      });
+    }
 
-  // try {
-  //   const cachedResponse = await env.OGP_CACHE.get(cacheKey, 'stream');
-  //   if (cachedResponse) {
-  //     return new Response(cachedResponse, {
-  //       headers: {
-  //         'Content-Type': 'image/png',
-  //         'Cache-Control': 'public, max-age=86400',
-  //       }
-  //     });
-  //   }
+    const response = new ImageResponse(generateHTML(title), {
+      width: 1200,
+      height: 630
+    });
 
-  //   const response = new ImageResponse(generateHTML(title), {
-  //     width: 1200,
-  //     height: 630
-  //   });
+    const blob = await response.blob();
+    await env.OGP_CACHE.put(cacheKey, blob.stream(), {
+      expirationTtl: 86400,
+    });
 
-  //   const blob = await response.blob();
-  //   await env.OGP_CACHE.put(cacheKey, blob.stream(), {
-  //     expirationTtl: 86400,
-  //   });
-
-  //   return new Response(blob, {
-  //     headers: {
-  //       'Content-Type': 'image/png',
-  //       'Cache-Control': 'public, max-age=86400'
-  //     }
-  //   });
-  // } catch (e) {
-  //   console.error(e);
-  //   return new Response('OGP画像生成エラー', { status: 500 });
-  // }
+    return new Response(blob, {
+      headers: {
+        'Content-Type': 'image/png',
+        'Cache-Control': 'public, max-age=86400'
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    return new Response('OGP画像生成エラー', { status: 500 });
+  }
 };
 
 function generateHTML(title: string): string {
