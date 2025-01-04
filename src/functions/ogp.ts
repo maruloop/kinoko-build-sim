@@ -8,17 +8,17 @@ export const onRequestGet: PagesFunction<{ OGP_CACHE: KVNamespace }> = async (co
   const title = sanitizeTitle(url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター');
   const cacheKey = `ogp-${url.searchParams.get('title') || 'default'}`;
 
-  const cachedResponse = await env.OGP_CACHE.get(cacheKey, 'stream');
-  if (cachedResponse) {
-    return new Response(cachedResponse, {
-      headers: {
-        'Content-Type': 'image/png',
-        'Cache-Control': 'public, max-age=86400',
-      }
-    });
-  }
-
   try {
+    const cachedResponse = await env.OGP_CACHE.get(cacheKey, 'stream');
+    if (cachedResponse) {
+      return new Response(cachedResponse, {
+        headers: {
+          'Content-Type': 'image/png',
+          'Cache-Control': 'public, max-age=86400',
+        }
+      });
+    }
+
     const response = new ImageResponse(generateHTML(title), {
       width: 1200,
       height: 630
