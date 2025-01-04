@@ -30,12 +30,7 @@ export const onRequestGet: PagesFunction<{ OGP_CACHE: KVNamespace }> = async (co
     //   expirationTtl: 86400,
     // });
 
-    return new Response(blob, {
-      headers: {
-        'Content-Type': 'image/png',
-        'Cache-Control': 'public, max-age=86400'
-      }
-    });
+    return response;
   } catch (e) {
     console.error(e);
     return new Response('OGP画像生成エラー', { status: 500 });
