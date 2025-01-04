@@ -14,9 +14,5 @@ require('esbuild').buildSync({
   minify: true,
   sourcemap: true,
   target: ['esnext'],
-  loader: {
-    '.wasm': 'file'
-  },
   format: 'esm',
-  assetNames: '[name]-[hash]',
 });

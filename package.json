@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20241230.0",
-    "@resvg/resvg-js": "^2.6.2"
+    "@resvg/resvg-wasm": "^2.6.2",
+    "resvg-wasm": "^0.4.1"
   }
 }
