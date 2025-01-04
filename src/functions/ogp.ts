@@ -1,24 +1,17 @@
 /// <reference types="@cloudflare/workers-types" />
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-import resvgWasm from '../../dist/index_bg.wasm';
-const genModuleInit = () => {
-  let isInit = false;
-  return async () => {
-    if (isInit) {
-      return;
-    }
 
-    await initWasm(resvgWasm);
-    isInit = true;
-  };
-};
-const moduleInit = genModuleInit();
-
-export const onRequestGet: PagesFunction = async (context) => {
-    const { request } = context;
+export const onRequestGet: PagesFunction<{ OGP_WASM: KVNamespace }>  = async (context) => {
+    const { request, env } = context;
     const url = new URL(request.url);
     const title = sanitizeTitle(url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター');
-    await moduleInit();
+
+    const wasmBuffer = await env.OGP_WASM.get('index_bg.wasm', 'arrayBuffer');
+
+    if (!wasmBuffer) {
+        return new Response('Wasm not found in KV', { status: 404 });
+    }
+    await initWasm(wasmBuffer);
     const resvg = new Resvg(generateSVG(title));
 
     const pngData = resvg.render();

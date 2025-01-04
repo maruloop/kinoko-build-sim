@@ -9,12 +9,6 @@ esbuild.buildSync({
   target: ['esnext']
 });
 
-const fs = require('fs');
-fs.copyFileSync(
-  'node_modules/@resvg/resvg-wasm/index_bg.wasm',
-  'dist/index_bg.wasm'
-);
-
 esbuild.buildSync({
   entryPoints: ['src/functions/ogp.ts'],
   outdir: 'functions',
