@@ -1,14 +1,18 @@
 /// <reference types="@cloudflare/workers-types" />
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
 
-async function loadWasm() {
-  const wasmModule = await fetch('/index_bg.wasm');
+async function loadWasm(request: Request) {
+  const wasmUrl = new URL('/index_bg.wasm', request.url).toString();
+  const wasmModule = await fetch(wasmUrl);
   const wasmBuffer = await wasmModule.arrayBuffer();
   await initWasm(wasmBuffer);
 }
 
-export const onRequestGet: PagesFunction = async () => {
-  await loadWasm();
+export const onRequestGet: PagesFunction = async (context) => {
+  const { request, env } = context;
+  const url = new URL(request.url);
+
+  await loadWasm(request);
 
   const svg = `
     <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
