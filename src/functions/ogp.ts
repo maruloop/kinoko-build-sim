@@ -1,6 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-import resvgWasm from '@resvg/resvg-wasm/index_bg.wasm';
+import resvgWasm from '../../dist/index_bg.wasm';
 const genModuleInit = () => {
   let isInit = false;
   return async () => {

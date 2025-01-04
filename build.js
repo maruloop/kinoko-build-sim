@@ -1,4 +1,6 @@
-require('esbuild').buildSync({
+const esbuild = require('esbuild')
+
+esbuild.buildSync({
   entryPoints: ['src/index.ts'],
   outfile: 'dist/index.js',
   bundle: true,
@@ -7,7 +9,13 @@ require('esbuild').buildSync({
   target: ['esnext']
 });
 
-require('esbuild').buildSync({
+const fs = require('fs');
+fs.copyFileSync(
+  'node_modules/@resvg/resvg-wasm/index_bg.wasm',
+  'dist/index_bg.wasm'
+);
+
+esbuild.buildSync({
   entryPoints: ['src/functions/ogp.ts'],
   outdir: 'functions',
   bundle: true,
@@ -18,5 +26,5 @@ require('esbuild').buildSync({
   loader: {
     '.wasm': 'file'
   },
-  assetNames: '[name]-[hash]'
+  assetNames: '[name]-[hash]',
 });
