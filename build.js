@@ -17,5 +17,6 @@ require('esbuild').buildSync({
   loader: {
     '.wasm': 'file'
   },
+  format: 'esm',
   assetNames: '[name]-[hash]',
 });
