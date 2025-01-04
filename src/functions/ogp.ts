@@ -1,14 +1,24 @@
 /// <reference types="@cloudflare/workers-types" />
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-import wasmUrl from '@resvg/resvg-wasm/index_bg.wasm';
+import resvgWasm from '@resvg/resvg-wasm/index_bg.wasm';
+const genModuleInit = () => {
+  let isInit = false;
+  return async () => {
+    if (isInit) {
+      return;
+    }
+
+    await initWasm(resvgWasm);
+    isInit = true;
+  };
+};
+const moduleInit = genModuleInit();
 
 export const onRequestGet: PagesFunction = async (context) => {
     const { request } = context;
     const url = new URL(request.url);
     const title = sanitizeTitle(url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター');
-    console.log(wasmUrl);
-
-    const resvgWasm = await initWasm(await (await fetch(wasmUrl)).arrayBuffer());
+    await moduleInit();
     const resvg = new Resvg(generateSVG(title));
 
     const pngData = resvg.render();
