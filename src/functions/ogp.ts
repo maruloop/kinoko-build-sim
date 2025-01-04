@@ -1,95 +1,21 @@
 /// <reference types="@cloudflare/workers-types" />
-import { ImageResponse } from 'workers-og';
+import { Resvg } from '@resvg/resvg-js';
 
-export const onRequestGet: PagesFunction<{ OGP_CACHE: KVNamespace }> = async (context) => {
-  const { request, env } = context;
-  const url = new URL(request.url);
+export const onRequestGet: PagesFunction = async () => {
+    const svg = `
+    <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="#f9f9f9"/>
+      <text x="50%" y="50%" font-size="64" text-anchor="middle" fill="#333">Dynamic OGP</text>
+    </svg>
+  `;
 
-  // const title = sanitizeTitle(url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター');
-  const title = url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター';
-  const cacheKey = `ogp-${url.searchParams.get('title') || 'default'}`;
-  console.log(title);
+    const resvg = new Resvg(svg);
+    const png = resvg.render().asPng();
 
-    // const cachedResponse = await env.OGP_CACHE.get(cacheKey, 'stream');
-    // if (cachedResponse) {
-    //   return new Response(cachedResponse, {
-    //     headers: {
-    //       'Content-Type': 'image/png',
-    //       'Cache-Control': 'public, max-age=86400',
-    //     }
-    //   });
-    // }
-
-    try {
-      const html = `
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; font-family: sans-serif; background: #160f29">
-        <div style="display: flex; width: 100vw; padding: 40px; color: white;">
-          <h1 style="font-size: 60px; font-weight: 600; margin: 0; font-family: 'Bitter'; font-weight: 500">${title}</h1>
-        </div>
-      </div>
-     `;
-
-      return new ImageResponse(html, {
-        width: 1200,
-        height: 630,
-      });
-
-    // const blob = await response.blob();
-    // await env.OGP_CACHE.put(cacheKey, blob.stream(), {
-    //   expirationTtl: 86400,
-    // });
-
-    // return response;
-  } catch (e) {
-    console.error(e);
-    return new Response('OGP画像生成エラー', { status: 500 });
-  }
+    return new Response(png, {
+        headers: {
+            'Content-Type': 'image/png',
+            'Cache-Control': 'public, max-age=86400'
+        }
+    });
 };
-
-// function generateHTML(title: string): string {
-//   return `
-//     <html>
-//       <head>
-//         <style>
-//           body {
-//             width: 1200px;
-//             height: 630px;
-//             display: flex;
-//             justify-content: center;
-//             align-items: center;
-//             font-family: 'Arial', sans-serif;
-//             background-color: #f9f9f9;
-//             margin: 0;
-//           }
-//           .container {
-//             text-align: center;
-//           }
-//           .title {
-//             font-size: 64px;
-//             color: #333;
-//             margin: 0;
-//           }
-//         </style>
-//       </head>
-//       <body>
-//         <div class="container">
-//           <h1 class="title">${escapeHTML(title)}</h1>
-//         </div>
-//       </body>
-//     </html>
-//   `;
-// }
-
-// function sanitizeTitle(title: string): string {
-//   return title.length > 25 ? title.slice(0, 25) + '…' : title;
-// }
-
-// function escapeHTML(str: string): string {
-//   return str.replace(/[&<>"']/g, (match) => ({
-//     '&': '&amp;',
-//     '<': '&lt;',
-//     '>': '&gt;',
-//     '"': '&quot;',
-//     "'": '&#039;'
-//   }[match] || match));
-// }
