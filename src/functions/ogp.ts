@@ -1,33 +1,45 @@
 /// <reference types="@cloudflare/workers-types" />
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-
-async function loadWasm(request: Request) {
-  const wasmUrl = new URL('/index_bg.wasm', request.url).toString();
-  const wasmModule = await fetch(wasmUrl);
-  const wasmBuffer = await wasmModule.arrayBuffer();
-  await initWasm(wasmBuffer);
-}
+import wasmUrl from '@resvg/resvg-wasm/index_bg.wasm';
 
 export const onRequestGet: PagesFunction = async (context) => {
-  const { request, env } = context;
-  const url = new URL(request.url);
+    const { request } = context;
+    const url = new URL(request.url);
+    const title = sanitizeTitle(url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター');
+    console.log(wasmUrl);
 
-  await loadWasm(request);
+    const resvgWasm = await initWasm(await (await fetch(wasmUrl)).arrayBuffer());
+    const resvg = new Resvg(generateSVG(title));
 
-  const svg = `
+    const pngData = resvg.render();
+    const pngBuffer = pngData.asPng();
+
+    return new Response(pngBuffer, {
+        headers: {
+            'Content-Type': 'image/png',
+            'Cache-Control': 'public, max-age=86400',
+        }
+    });
+};
+
+function generateSVG(title: string): string {
+    return `
     <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
       <rect width="100%" height="100%" fill="#f9f9f9"/>
-      <text x="50%" y="50%" font-size="64" text-anchor="middle" fill="#333">Dynamic OGP</text>
-    </svg>
-  `;
+      <text x="50%" y="50%" font-family="Arial" font-size="64" fill="#333" text-anchor="middle">${escapeHTML(title)}</text>
+    </svg>`;
+}
 
-  const resvg = new Resvg(svg);
-  const png = resvg.render().asPng();
+function sanitizeTitle(title: string): string {
+    return title.length > 25 ? title.slice(0, 25) + '…' : title;
+}
 
-  return new Response(png, {
-    headers: {
-      'Content-Type': 'image/png',
-      'Cache-Control': 'public, max-age=86400'
-    }
-  });
-};
+function escapeHTML(str: string): string {
+    return str.replace(/[&<>"']/g, (match) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    }[match] || match));
+}
