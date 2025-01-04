@@ -8,6 +8,7 @@ export const onRequestGet: PagesFunction<{ OGP_CACHE: KVNamespace }> = async (co
   // const title = sanitizeTitle(url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター');
   const title = url.searchParams.get('title') || 'キノコ伝説ビルドシミュレーター';
   const cacheKey = `ogp-${url.searchParams.get('title') || 'default'}`;
+  console.log(title);
 
     // const cachedResponse = await env.OGP_CACHE.get(cacheKey, 'stream');
     // if (cachedResponse) {
@@ -20,17 +21,25 @@ export const onRequestGet: PagesFunction<{ OGP_CACHE: KVNamespace }> = async (co
     // }
 
     try {
-    const response = new ImageResponse("<div>test</div>", {
-      width: 1200,
-      height: 630
-    });
+      const html = `
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; font-family: sans-serif; background: #160f29">
+        <div style="display: flex; width: 100vw; padding: 40px; color: white;">
+          <h1 style="font-size: 60px; font-weight: 600; margin: 0; font-family: 'Bitter'; font-weight: 500">${title}</h1>
+        </div>
+      </div>
+     `;
 
-    const blob = await response.blob();
+      return new ImageResponse(html, {
+        width: 1200,
+        height: 630,
+      });
+
+    // const blob = await response.blob();
     // await env.OGP_CACHE.put(cacheKey, blob.stream(), {
     //   expirationTtl: 86400,
     // });
 
-    return response;
+    // return response;
   } catch (e) {
     console.error(e);
     return new Response('OGP画像生成エラー', { status: 500 });
