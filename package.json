@@ -7,12 +7,14 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:config": "npx ts-jest config:init",
-    "build": "node build.js"
+    "build": "node build.js",
+    "deploy:workers": "npx wrangler deploy src/workers/ogp.ts"
   },
   "keywords": [],
   "author": "maru",
   "license": "ISC",
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241230.0",
     "@types/jest": "^29.5.14",
     "esbuild": "^0.24.2",
     "identity-obj-proxy": "^3.0.0",
@@ -23,5 +25,8 @@
     "wrangler": "^3.99.0"
   },
   "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2",
+    "satori": "^0.12.0",
+    "yoga-wasm-web": "^0.3.3"
   }
 }
