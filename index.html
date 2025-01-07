@@ -21,59 +21,10 @@
     <meta property="og:url" content="https://kinoko-simu.example.com">
     <meta property="og:type" content="website">
 
-    <!-- Twitter Card (Optional) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="(非公式)キノコ伝説ビルドシミュレーター">
     <meta name="twitter:description" content="ビルドを作って共有しよう！">
     <meta name="twitter:image" content="https://ogp-kino-simu.marumaru-niconico.workers.dev/?title=キノコ伝説ビルドシミュレーター">
-    <script>
-        function escapeHTML(str) {
-            return str.replace(/[&<>"']/g, (match) => ({
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            }[match] || match));
-        }
-
-        function getQueryParam(param) {
-            const params = new URLSearchParams(window.location.search);
-            return params.get(param);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const title = getQueryParam('title') || 'キノコ伝説ビルドシミュレーター';
-            const escapedTitle = escapeHTML(title);
-            const encodedTitle = encodeURIComponent(escapedTitle);
-            const date = Math.floor(Date.now() / 86400000);
-
-
-            const ogpTitle = document.querySelector('meta[property="og:title"]');
-            if (ogpTitle) {
-                ogpTitle.setAttribute('content', escapedTitle);
-            }
-            const twitterTitle = document.querySelector('meta[property="twitter:title"]');
-            if (twitterTitle) {
-                twitterTitle.setAttribute('content', escapedTitle);
-            }
-
-            const ogpImage = document.querySelector('meta[property="og:image"]');
-            if (ogpImage) {
-                ogpImage.setAttribute('content',
-                    `https://ogp-kino-simu.marumaru-niconico.workers.dev/?title=${encodedTitle}&date=${date}`
-                );
-            }
-            const twitterImage = document.querySelector('meta[property="twitter:image"]');
-            if (twitterImage) {
-                twitterImage.setAttribute('content',
-                    `https://ogp-kino-simu.marumaru-niconico.workers.dev/?title=${encodedTitle}&date=${date}`
-                );
-            }
-
-            document.title = escapedTitle;
-        });
-    </script>
 </head>
 
 <body>
