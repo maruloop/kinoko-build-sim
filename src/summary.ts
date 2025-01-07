@@ -14,16 +14,20 @@ function loadSummaryFromURL() {
     const params = new URLSearchParams(window.location.search);
     const existingTitle = params.get(TITLE_QUERY_KEY);
     if (existingTitle) {
-        input.value = decodeURIComponent(existingTitle);
+        input.value = sanitizeTitle(decodeURIComponent(existingTitle));
     }
 }
+
+function sanitizeTitle(value) {
+    return value.replace(/[<>&"'`]/g, '');
+};
 
 export function initSummaryUI() {
     const input = document.getElementById('build-title');
 
     loadSummaryFromURL();
     addSafeEventListener(input, 'input', () => {
-        const sanitizedValue = input.value.replace(/[<>&"'`]/g, '');
+        const sanitizedValue = sanitizeTitle(input.value);
 
         if (input.value !== sanitizedValue) {
             input.value = sanitizedValue;
