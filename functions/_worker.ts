@@ -28,6 +28,7 @@ export const onRequest: PagesFunction = async (context) => {
   const date = new Date().toISOString().split('T')[0];
 
   const html = await response.text();
+  console.log(escapeHTML(title));
   const modifiedHtml = html.replace(
     /<meta property="og:title" content=".*?">/,
     `<meta property="og:title" content="${escapeHTML(title)}">`
@@ -35,6 +36,7 @@ export const onRequest: PagesFunction = async (context) => {
     /<meta property="og:image" content=".*?">/,
     `<meta property="og:image" content="https://ogp-kino-simu.marumaru-niconico.workers.dev/?title=${encodeURIComponent(escapeHTML(title))}&date=${date}">`
   );
+  console.log(modifiedHtml);
 
   return new Response(modifiedHtml, {
     status: response.status,
