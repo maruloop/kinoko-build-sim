@@ -1,3 +1,4 @@
+import { initSummaryUI } from './summary';
 import { initJobsUI } from './jobs';
 import { initEquipmentsUI } from './equipments';
 import { initSkillsUI } from './skills';
@@ -7,6 +8,7 @@ import { initStatuesUI } from './statues';
 import { initEnchantmentsUI } from './enchantment';
 
 export function updateAllUI() {
+  initSummaryUI();
   initJobsUI();
   initEquipmentsUI();
   initSkillsUI();
