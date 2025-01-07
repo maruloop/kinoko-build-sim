@@ -28,8 +28,8 @@ const MAIN_OPTIONS: EnchantmentMain[] = [
     name: 'Ⅴ',
     options: [
       { id: 11, name: '連撃ダメージ軽減' },
-      { id: 12, name: '仲間ダメージ軽減' },
-      { id: 13, name: '技能ダメージ軽減' },
+      { id: 12, name: '反撃ダメージ軽減' },
+      { id: 13, name: '仲間ダメージ軽減' },
       { id: 14, name: '通常攻撃ダメージ軽減' },
     ],
   },
@@ -39,8 +39,9 @@ const MAIN_OPTIONS: EnchantmentMain[] = [
     options: [
       { id: 21, name: '会心ダメ加算' },
       { id: 22, name: '会心抵抗加算' },
-      { id: 23, name: 'ボスダメージ' },
-      { id: 24, name: 'ボスダメージ軽減' },
+      { id: 23, name: '技能ダメージ軽減' },
+      { id: 24, name: 'ボスダメージ' },
+      { id: 25, name: 'ボスダメージ軽減' },
     ],
   },
 ]
