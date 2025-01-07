@@ -1,0 +1,26 @@
+#summary-container {
+    text-align: center;
+    margin: clamp(12px, 4vw, 32px);
+}
+
+#build-title {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 16px;
+    font-size: 1.1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#build-title:focus {
+    border-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+#build-title::placeholder {
+    color: #aaa;
+    font-size: 1rem;
+}
