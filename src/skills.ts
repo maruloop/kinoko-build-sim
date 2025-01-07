@@ -157,6 +157,6 @@ export function initSkillsUI() {
 
   const resetSkillsBtn = document.getElementById('reset-skills-btn') as HTMLButtonElement;
   addSafeEventListener(resetSkillsBtn, 'click', () => {
-    showResetModal(QUERY_KEY, '技能');
+    showResetModal([QUERY_KEY], '技能');
   });
 }

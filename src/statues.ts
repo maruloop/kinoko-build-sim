@@ -122,6 +122,6 @@ export function initStatuesUI() {
 
   const resetStatuesBtn = document.getElementById('reset-statues-btn') as HTMLButtonElement;
   addSafeEventListener(resetStatuesBtn, 'click', () => {
-    showResetModal(QUERY_KEY, '彫像');
+    showResetModal([QUERY_KEY], '彫像');
   });
 }

@@ -1,0 +1,20 @@
+#enchantment-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 30%, 400px), 1fr));
+  gap: clamp(8px, 3vw, 36px);
+  justify-content: center;
+  max-width: 90vw;
+  margin: 0 auto;
+  grid-auto-flow: dense;
+}
+
+#enchantment-container h3{
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  #enchantment-container {
+    grid-template-columns: 1fr;
+  }
+}

@@ -6,13 +6,6 @@
     padding: clamp(8px, 2vw, 20px);
 }
 
-#enchantment-sets-container h3 {
-    margin-bottom: clamp(8px, 1.5vw, 16px);
-    font-size: clamp(1em, 2vw, 1.4em);
-    color: #444;
-    text-align: left;
-}
-
 .enchantment-set-item {
     display: flex;
     align-items: center;

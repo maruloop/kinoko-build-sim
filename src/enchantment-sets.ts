@@ -1,4 +1,5 @@
 import { addSafeEventListener } from './helper';
+import { SETS_QUERY_KEY } from './enchantment';
 
 interface EnchantmentSets {
   id: number;
@@ -16,10 +17,13 @@ const ENCHANTMENT_SETS: EnchantmentSets[] = [
 ];
 
 const MAX_TOTAL = 6;
-const QUERY_KEY = 'enchantment-sets';
 
 function renderEnchantmentSets() {
   const container = document.getElementById('enchantment-sets-container') as HTMLDivElement;
+  const existingItems = container.querySelectorAll('.enchantment-set-item');
+  existingItems.forEach(item => {
+    item.remove();
+  });
 
   ENCHANTMENT_SETS.forEach(set => {
     const item = document.createElement('div');
@@ -101,9 +105,9 @@ function updateURL() {
   }).join(',');
 
   if (selectedSets) {
-    params.set(QUERY_KEY, selectedSets);
+    params.set(SETS_QUERY_KEY, selectedSets);
   } else {
-    params.delete(QUERY_KEY);
+    params.delete(SETS_QUERY_KEY);
   }
 
   const newPath = params.toString() ? '?' + params.toString() : window.location.pathname;
@@ -112,13 +116,14 @@ function updateURL() {
 
 function loadEnchantmentsFromURL() {
   const params = new URLSearchParams(window.location.search);
-  const setsString = params.get(QUERY_KEY);
+  const setsString = params.get(SETS_QUERY_KEY);
+  const container = document.getElementById('enchantment-sets-container') as HTMLDivElement;
+  container.dataset.total = '0';
 
   renderEnchantmentSets();
 
   if (setsString) {
     const pairs = setsString.split(',').map(pair => pair.split(':'));
-    const container = document.getElementById('enchantment-sets-container') as HTMLDivElement;
 
     pairs.forEach(([type, value]) => {
       const item = container.querySelector(`.enchantment-set-item[data-type="${type}"]`) as HTMLDivElement;

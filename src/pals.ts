@@ -183,7 +183,7 @@ export function initPalsUI() {
 
   const resetPalsBtn = document.getElementById('reset-pals-btn') as HTMLButtonElement;
   addSafeEventListener(resetPalsBtn, 'click', () => {
-    showResetModal(QUERY_KEY, '仲間');
+    showResetModal([QUERY_KEY], '仲間');
   });
 }
 

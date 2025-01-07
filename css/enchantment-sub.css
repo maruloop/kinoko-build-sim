@@ -1,0 +1,33 @@
+.sub-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 20vw, 200px), 1fr));
+  gap: clamp(8px, 2vw, 16px);
+  justify-content: center;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+.sub-option-item {
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
+  border: 1px solid #ddd;
+  border-radius: clamp(6px, 1vw, 12px);
+  font-size: clamp(14px, 1vw, 16px);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  user-select: none;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sub-option-item:hover {
+  background-color: #f0f0f0;
+}
+
+.sub-option-item.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}

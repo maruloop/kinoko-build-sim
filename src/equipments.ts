@@ -137,7 +137,7 @@ export function initEquipmentsUI() {
   const resetEquipmentsBtn = document.getElementById('reset-equipments-btn') as HTMLButtonElement;
 
   addSafeEventListener(resetEquipmentsBtn, 'click', () => {
-    showResetModal(QUERY_KEY, '装備');
+    showResetModal([QUERY_KEY], '装備');
   });
 }
 

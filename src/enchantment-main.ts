@@ -1,14 +1,10 @@
 import { addSafeEventListener } from './helper';
+import { EnchantmentOption, MAIN_QUERY_KEY } from './enchantment';
 
 interface EnchantmentMain {
   id: number;
   name: string;
   options: EnchantmentOption[];
-}
-
-interface EnchantmentOption {
-  id: number;
-  name: string;
 }
 
 const MAIN_OPTIONS: EnchantmentMain[] = [
@@ -46,10 +42,13 @@ const MAIN_OPTIONS: EnchantmentMain[] = [
   },
 ]
 
-const QUERY_KEY = 'enchantment-main'
 
 function renderEnchantMain() {
   const container = document.getElementById('enchantment-main-container') as HTMLDivElement;
+  const existingSections = container.querySelectorAll('.enchantment-part');
+  existingSections.forEach(section => {
+    section.remove();
+  });
 
   MAIN_OPTIONS.forEach((main) => {
     const section = document.createElement('div');
@@ -87,15 +86,22 @@ function renderEnchantMain() {
 
 function updateURL(event: Event) {
   const select = event.target as HTMLSelectElement;
-  const part = select.dataset.part;
+  const part = select.dataset.part;  // A, B, C など
   const selectedOption = select.selectedOptions[0];
   const selectedId = selectedOption.dataset.id;
 
   const params = new URLSearchParams(window.location.search);
+  const currentSelections = params.get(MAIN_QUERY_KEY)?.split(',') || [];
+  const updatedSelections = currentSelections.filter(pair => !pair.startsWith(`${part}:`));
+
   if (selectedId) {
-    params.set(`${QUERY_KEY}-${part}`, selectedId);
+    updatedSelections.push(`${part}:${selectedId}`);
+  }
+
+  if (updatedSelections.length > 0) {
+    params.set(MAIN_QUERY_KEY, updatedSelections.join(','));
   } else {
-    params.delete(`${QUERY_KEY}-${part}`);
+    params.delete(MAIN_QUERY_KEY);
   }
 
   const newPath = params.toString() ? '?' + params.toString() : window.location.pathname;
@@ -104,25 +110,38 @@ function updateURL(event: Event) {
 
 function loadEnchantMainFromURL() {
   const params = new URLSearchParams(window.location.search);
+  const setsString = params.get(MAIN_QUERY_KEY);
 
-  MAIN_OPTIONS.forEach((main) => {
-    const selectedId = params.get(`${QUERY_KEY}-${main.id}`);
-    const select = document.querySelector(
-      `select[data-part="${main.id}"]`
-    ) as HTMLSelectElement;
+  if (setsString) {
+    const pairs = setsString.split(',');
 
-    if (selectedId) {
-      const option = select.querySelector(
-        `option[data-id="${selectedId}"]`
-      ) as HTMLOptionElement;
+    pairs.forEach(pair => {
+      const [part, selectedId] = pair.split(':');
+      const select = document.querySelector(
+        `select[data-part="${part}"]`
+      ) as HTMLSelectElement;
 
-      if (option) {
-        select.value = option.value;
+      if (select) {
+        const option = select.querySelector(
+          `option[data-id="${selectedId}"]`
+        ) as HTMLOptionElement;
+
+        if (option) {
+          select.value = option.value;
+        }
       }
-    } else {
-      select.selectedIndex = 0;
-    }
-  });
+    });
+  } else {
+    MAIN_OPTIONS.forEach((main) => {
+      const select = document.querySelector(
+        `select[data-part="${main.id}"]`
+      ) as HTMLSelectElement;
+
+      if (select) {
+        select.selectedIndex = 0;
+      }
+    });
+  }
 }
 
 export function initEnchantmentMainUI() {

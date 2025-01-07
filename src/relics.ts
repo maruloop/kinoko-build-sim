@@ -199,6 +199,6 @@ export function initRelicsUI() {
   renderRelicSelection();
   const resetRelicsBtn = document.getElementById('reset-relics-btn') as HTMLButtonElement;
   addSafeEventListener(resetRelicsBtn, 'click', () => {
-    showResetModal(QUERY_KEY, '遺物');
+    showResetModal([QUERY_KEY], '遺物');
   });
 }
