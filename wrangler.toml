@@ -1,3 +1,7 @@
 name = "ogp-kino-simu"
 workers_dev = true
 compatibility_date = "2025-01-01"
+
+[[pages]]
+project_name = "kinoko-build-sim"
+entry_point = "dist"

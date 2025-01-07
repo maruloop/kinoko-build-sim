@@ -14,6 +14,8 @@ function escapeHTML(str: string): string {
 }
 
 export const onRequest: PagesFunction = async (context) => {
+  console.log("hello debug");
+
   const { request, next } = context;
 
   const response = await next();
