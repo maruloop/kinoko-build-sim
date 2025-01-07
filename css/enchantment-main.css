@@ -1,0 +1,21 @@
+.enchantment-part {
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.enchantment-part h4 {
+    margin: 0;
+    font-size: 1rem;
+    display: inline;
+}
+
+.enchantment-part select {
+    padding: 6px 10px;
+    font-size: clamp(14px, 1.2vw, 18px);
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    max-width: 400px;
+    min-width: 160px;
+}

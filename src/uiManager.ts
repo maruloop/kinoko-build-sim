@@ -6,6 +6,7 @@ import { initPalsUI } from './pals';
 import { initRelicsUI } from './relics';
 import { initStatuesUI } from './statues';
 import { initEnchantmentsUI } from './enchantment';
+import { initEnchantmentMainUI } from './enchantment-main';
 
 export function updateAllUI() {
   initSummaryUI();
@@ -16,4 +17,5 @@ export function updateAllUI() {
   initRelicsUI();
   initStatuesUI();
   initEnchantmentsUI();
+  initEnchantmentMainUI();
 }
