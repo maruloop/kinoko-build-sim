@@ -81,3 +81,50 @@ h2 {
   display: inline;
   font-size: 1.2rem;
 }
+
+.container {
+  margin: clamp(10px, 3vw, 30px) 0;
+}
+
+.selected-grid{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(48px, 8vw, 80px), 1fr));
+  gap: clamp(2px, 3vw, 5px);
+  padding: 0 5%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.pool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(60px, 10vw, 100px), 1fr));
+  gap: clamp(10px, 3vw, 20px);
+  justify-items: center;
+}
+
+.icon {
+  width: clamp(48px, 8vw, 80px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, outline 0.2s;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}
+
+.icon.selected {
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+.icon.empty {
+  display: inline-block;
+  background-color: #f0f0f0;
+  border: 3px solid #cccccc;
+  border-radius: 8px;
+}

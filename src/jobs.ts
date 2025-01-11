@@ -26,7 +26,7 @@ jobRadios.forEach((radio) => {
   addSafeEventListener(radio, 'change', (event) => {
     const selectedRadio = event.target as HTMLInputElement;
     const selectedId = parseInt(selectedRadio.value, 10);
-    document.getElementById('jobs-option-container')!.dataset.selectedJob = String(selectedId);
+    document.getElementById('job-options')!.dataset.selectedJob = String(selectedId);
     updateURL(selectedId);
     updatePalLimitOnJobChange();
   });
@@ -45,7 +45,7 @@ function loadJobFromURL() {
   const job = jobs.find(j => j.id === jobId);
 
   if (job) {
-    document.getElementById('jobs-option-container')!.dataset.selectedJob = String(jobId);
+    document.getElementById('job-options')!.dataset.selectedJob = String(jobId);
     updateRadioSelection(jobId);
   }
 }
@@ -63,11 +63,11 @@ export function initJobsUI() {
 }
 
 export function getSelectedJob(): Job {
-  const selectedId = parseInt(document.getElementById('jobs-option-container')!.dataset.selectedJob || '1');
+  const selectedId = parseInt(document.getElementById('job-options')!.dataset.selectedJob || '1');
   return jobs.find(j => j.id === selectedId) || jobs[0];
 }
 
 export function getPalLimit(): number {
-  const selectedId = parseInt(document.getElementById('jobs-option-container')!.dataset.selectedJob || '1');
+  const selectedId = parseInt(document.getElementById('job-options')!.dataset.selectedJob || '1');
   return jobs.find(j => j.id === selectedId)?.palLimit || jobs[0].palLimit;
 }

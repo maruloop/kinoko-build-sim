@@ -1,8 +1,3 @@
-.statue-container {
-    text-align: center;
-    margin: clamp(12px, 4vw, 32px);
-}
-
 .statue-option-item {
     display: flex;
     align-items: center;

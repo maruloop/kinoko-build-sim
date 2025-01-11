@@ -6,14 +6,14 @@ const MAX_SLOTS = 5;
 const QUERY_KEY = 'skills';
 
 function renderSkillSelection() {
-  const skillsList = document.getElementById('skills-list') as HTMLDivElement;
+  const skillsList = document.getElementById('skill-list') as HTMLDivElement;
   skillsList.innerHTML = '';
 
   skills.forEach(skill => {
     const skillElement = document.createElement('img');
     skillElement.src = skill.icon;
     skillElement.alt = skill.name;
-    skillElement.classList.add('skill-icon');
+    skillElement.classList.add('icon');
     skillElement.dataset.id = String(skill.id);
 
     addSafeEventListener(skillElement, 'click', () => toggleSkill(skill));
@@ -41,7 +41,7 @@ function toggleSkill(skill: Skill) {
       const skillImage = document.createElement('img');
       skillImage.src = skill.icon;
       skillImage.alt = skill.name;
-      skillImage.classList.add('skill-icon', 'selected');
+      skillImage.classList.add('icon');
       skillImage.dataset.palId = String(skill.id);
 
       addSafeEventListener(skillImage, 'click', () => {
@@ -62,7 +62,7 @@ function removeSkill(slot: number) {
 
   if (slotElement) {
     slotElement.removeAttribute('data-skill-id');
-    slotElement.innerHTML = '<span class="skill-icon empty"></span>';
+    slotElement.innerHTML = '<span class="icon empty"></span>';
   }
 
   renderSkillSelection();
@@ -70,7 +70,7 @@ function removeSkill(slot: number) {
 }
 
 function updateSkillSelectionUI() {
-  document.querySelectorAll<HTMLImageElement>('.skill-icon').forEach(icon => {
+  document.querySelectorAll<HTMLImageElement>('#skill-list .icon').forEach(icon => {
     const id = icon.dataset.id;
     const isSelected = document.querySelector(`.skill-slot[data-skill-id="${id}"]`);
 
@@ -110,7 +110,7 @@ function renderEmptySkillSlots() {
     const skillSlot = document.createElement('div');
     skillSlot.classList.add('skill-slot');
     skillSlot.dataset.slot = String(i);
-    skillSlot.innerHTML = '<span class="skill-icon empty"></span>';
+    skillSlot.innerHTML = '<span class="icon empty"></span>';
     selectedSkillsList.appendChild(skillSlot);
   }
 }
@@ -134,7 +134,7 @@ function loadSkillsFromURL() {
 
         const skillImage = document.createElement('img');
         skillImage.src = skill.icon;
-        skillImage.classList.add('skill-icon', 'selected');
+        skillImage.classList.add('icon');
         skillImage.alt = skill.name;
 
         addSafeEventListener(skillImage, 'click', () => {

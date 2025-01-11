@@ -6,14 +6,14 @@ import { addSafeEventListener } from './helper';
 const QUERY_KEY = 'pals';
 
 function renderPalSelection() {
-  const palsList = document.getElementById('pals-list') as HTMLDivElement;
+  const palsList = document.getElementById('pal-list') as HTMLDivElement;
   palsList.innerHTML = '';
 
   pals.forEach(pal => {
     const palElement = document.createElement('img');
     palElement.src = pal.icon;
     palElement.alt = pal.name;
-    palElement.classList.add('pal-icon');
+    palElement.classList.add('icon');
     palElement.dataset.id = String(pal.id);
 
     addSafeEventListener(palElement, 'click', () => togglePal(pal));
@@ -41,7 +41,7 @@ function togglePal(pal: Pal) {
       const palImage = document.createElement('img');
       palImage.src = pal.icon;
       palImage.alt = pal.name;
-      palImage.classList.add('pal-icon', 'selected');
+      palImage.classList.add('icon');
       palImage.dataset.palId = String(pal.id);
 
       addSafeEventListener(palImage, 'click', () => {
@@ -61,7 +61,7 @@ function removePal(slot: number) {
 
   if (slotElement) {
     slotElement.removeAttribute('data-pal-id');
-    slotElement.innerHTML = '<span class="pal-icon empty"></span>';
+    slotElement.innerHTML = '<span class="icon empty"></span>';
   }
 
   renderPalSelection();
@@ -69,7 +69,7 @@ function removePal(slot: number) {
 }
 
 function updatePalSelectionUI() {
-  document.querySelectorAll<HTMLImageElement>('.pal-icon').forEach(icon => {
+  document.querySelectorAll<HTMLImageElement>('#pal-list .icon').forEach(icon => {
     const id = icon.dataset.id;
     const isSelected = document.querySelector(`.pal-slot[data-pal-id="${id}"]`);
 
@@ -111,7 +111,7 @@ function renderEmptySelectedPals() {
     const palSlot = document.createElement('div');
     palSlot.classList.add('pal-slot');
     palSlot.dataset.slot = String(i);
-    palSlot.innerHTML = '<span class="pal-icon empty"></span>';
+    palSlot.innerHTML = '<span class="icon empty"></span>';
     selectedPalsList.appendChild(palSlot);
   }
 }
@@ -136,7 +136,7 @@ function loadPalsFromURL() {
         const palImage = document.createElement('img');
         palImage.src = pal.icon;
         palImage.alt = pal.name;
-        palImage.classList.add('pal-icon', 'selected');
+        palImage.classList.add('icon');
         palImage.dataset.palId = String(pal.id);
 
         addSafeEventListener(palImage, 'click', () => {
@@ -171,7 +171,7 @@ export function updatePalLimitOnJobChange() {
       const palElement = document.createElement('div');
       palElement.classList.add('pal-slot');
       palElement.dataset.slot = String(i);
-      palElement.innerHTML = '<span class="pal-icon empty"></span>';
+      palElement.innerHTML = '<span class="icon empty"></span>';
       selectedPalsList.appendChild(palElement);
     }
   }

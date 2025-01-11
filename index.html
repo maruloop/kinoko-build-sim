@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="./css/enchantment-sets.css">
     <link rel="stylesheet" href="./css/enchantment-main.css">
     <link rel="stylesheet" href="./css/enchantment-sub.css">
+    <link rel="stylesheet" href="./css/mounts.css">
 
     <meta property="og:title" content="(非公式)キノコ伝説ビルドシミュレーター">
     <meta property="og:description" content="ビルドを作って共有しよう！">
@@ -43,9 +44,7 @@
         <div class="tab" data-target="#back-talents">背飾り能力</div>
         <div class="tab" data-target="#enchantments">神器付魔</div>
         <div class="tab" data-target="#awakening">職業覚醒</div>
-        <div class="tab" data-target="#mounts">騎乗</div>
-        <div class="tab" data-target="#artifacts">神器</div>
-        <div class="tab" data-target="#back-accessories">背飾り</div>
+        <div class="tab" data-target="#mounts-artifacts-back-accessories">騎乗&神器&背飾り</div>
         <div class="tab" data-target="#avian">ペット</div>
         <div class="tab" data-target="#souls">武魂</div>
     </div>
@@ -70,8 +69,8 @@
             <div class="section-header">
                 <h2>職業</h2>
             </div>
-            <div id="jobs-option-container">
-                <div class="job-options">
+            <div id="jobs-option-container" class="container">
+                <div id="job-options" class="selected-grid">
                     <input type="radio" id="job-1" name="job" value="1" checked>
                     <label for="job-1">武聖</label>
 
@@ -104,8 +103,8 @@
                 <h2>装備</h2>
                 <button id="reset-equipments-btn" class="reset-btn" title="装備をリセット">↺</button>
             </div>
-            <div class="equipments-option-container">
-                <div id="equipments-option-list">
+            <div id="equipments-option-container" class="container">
+                <div id="equipments-option-list" class="list">
                 </div>
                 <div class="equipments-summary">
                     合計オプション数: <span id="equipments-total-count">0</span> / 20
@@ -119,15 +118,15 @@
                 <h2>技能</h2>
                 <button id="reset-skills-btn" class="reset-btn" title="技能をリセット">↺</button>
             </div>
-            <div class="skills-container">
+            <div id="skills-container" class="container">
                 <div class="skills-selected">
                     <h3>選択済み技能</h3>
-                    <div id="selected-skills" class="skills-list"></div>
+                    <div id="selected-skills" class="selected-grid"></div>
                 </div>
 
                 <div class="skills-pool">
                     <h3>技能一覧</h3>
-                    <div id="skills-list" class="skills-grid"></div>
+                    <div id="skill-list" class="pool-grid"></div>
                 </div>
             </div>
         </section>
@@ -137,15 +136,15 @@
                 <h2>仲間</h2>
                 <button id="reset-pals-btn" class="reset-btn" title="仲間をリセット">↺</button>
             </div>
-            <div class="pals-container">
+            <div id="pals-container" class="container">
                 <div class="pals-selected">
                     <h3>選択済み仲間</h3>
-                    <div id="selected-pals" class="pals-list"></div>
+                    <div id="selected-pals" class="selected-grid"></div>
                 </div>
 
                 <div class="pals-pool">
                     <h3>仲間一覧</h3>
-                    <div id="pals-list" class="pals-grid"></div>
+                    <div id="pal-list" class="pool-grid"></div>
                 </div>
             </div>
         </section>
@@ -155,15 +154,15 @@
                 <h2>遺物</h2>
                 <button id="reset-relics-btn" class="reset-btn" title="遺物をリセット">↺</button>
             </div>
-            <div class="relics-container">
+            <div id="relics-container" class="container">
                 <div class="relics-selected">
                     <h3>選択済み遺物</h3>
-                    <div id="selected-relics" class="relics-list"></div>
+                    <div id="selected-relics" class="selected-grid"></div>
                 </div>
 
                 <div class="relics-pool">
                     <h3>遺物一覧</h3>
-                    <div id="relics-list" class="relic-group-container"></div>
+                    <div id="relics-list" class="pool-grid"></div>
                 </div>
             </div>
         </section>
@@ -173,9 +172,9 @@
                 <h2>彫像</h2>
                 <button id="reset-statues-btn" class="reset-btn" title="彫像をリセット">↺</button>
             </div>
-            <div class="statue-container">
+            <div id="statue-container" class="container">
                 <h3>彫像の選択</h3>
-                <div id="statue-list" class="statue-option-list"></div>
+                <div id="statue-list" class="list"></div>
                 <div class="statue-summary">
                     合計: <span id="statue-total-count">0</span> / 5
                 </div>
@@ -192,15 +191,18 @@
                 <h2>神器付魔</h2>
                 <button id="reset-enchantments-btn" class="reset-btn" title="神器付魔をリセット">↺</button>
             </div>
-            <div id="enchantment-container">
+            <div id="enchantment-container" class="container">
                 <div id="enchantment-sets-container" data-total="0">
                     <h3>セット効果</h3>
+                    <div id="enchantment-sets-list" class="list"></div>
                 </div>
                 <div id="enchantment-main-container">
                     <h3>メインオプション</h3>
+                    <div id="enchantment-main-list" class="list"></div>
                 </div>
                 <div id="enchantment-sub-container">
                     <h3>サブオプション</h3>
+                    <div id="enchantment-sub-list" class="grid"></div>
                 </div>
             </div>
         </section>
@@ -210,19 +212,30 @@
             <p>職業覚醒を選択します。</p>
         </section>
 
-        <section id="mounts">
-            <h2>騎乗</h2>
-            <p>騎乗を選択します。</p>
-        </section>
-
-        <section id="artifacts">
-            <h2>神器</h2>
-            <p>神器を選択します。</p>
-        </section>
-
-        <section id="back-accessories">
-            <h2>背飾り</h2>
-            <p>背飾りを選択します。</p>
+        <section id="mounts-artifacts-back-accessories">
+            <div class="section-header">
+                <h2>騎乗&神器&背飾り</h2>
+                <button id="reset-mounts-artifacts-back-accessories-btn" class="reset-btn"
+                    title="騎乗&神器&背飾りをリセット">↺</button>
+            </div>
+            <div id="mounts-artifacts-back-accessories-container" class="container">
+                <div id="mounts">
+                    <div class="mount-selected">
+                        <h3>選択済み騎乗</h3>
+                        <div id="selected-mount" class="selected-grid"></div>
+                    </div>
+                    <div id="mount-pool">
+                        <h3>騎乗一覧</h3>
+                        <div id="mount-list" class="pool-grid"></div>
+                    </div>
+                </div>
+                <div id="artifacts">
+                    <h3>神器</h3>
+                </div>
+                <div id="back-accessories">
+                    <h3>背飾り</h3>
+                </div>
+            </div>
         </section>
 
         <section id="avian">

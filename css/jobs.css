@@ -1,12 +1,4 @@
-.job-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 200px), 1fr));
-  gap: clamp(10px, 2vw, 20px);
-  justify-content: center;
-  margin: clamp(10px, 3vw, 30px) 0;
-}
-
-.job-options label {
+#job-options label {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,16 +10,16 @@
   font-size: clamp(14px, 1.2vw, 18px);
 }
 
-.job-options input[type="radio"] {
+#job-options input[type="radio"] {
   display: none;
 }
 
-.job-options label:hover {
+#job-options label:hover {
   border-color: #007BFF;
   background-color: #f0f8ff;
 }
 
-.job-options input[type="radio"]:checked + label {
+#job-options input[type="radio"]:checked + label {
   border-color: #007BFF;
   background-color: #e0f0ff;
   font-weight: bold;

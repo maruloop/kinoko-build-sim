@@ -67,7 +67,7 @@ function renderEmptyRelicSlots() {
     slot.classList.add('relic-slot');
     slot.dataset.slot = String(index);
     slot.dataset.type = type;
-    slot.innerHTML = '<span class="relic-icon empty"></span>';
+    slot.innerHTML = '<span class="icon empty"></span>';
     selectedRelicsList.appendChild(slot);
   });
 }
@@ -87,7 +87,7 @@ function renderRelicSelection() {
       const relicElement = document.createElement('img');
       relicElement.src = relic.icon;
       relicElement.alt = relic.name;
-      relicElement.classList.add('relic-icon');
+      relicElement.classList.add('icon');
       relicElement.dataset.id = String(relic.id);
       relicElement.dataset.type = relic.type;
 
@@ -122,7 +122,7 @@ function toggleRelicSelection(relic: Relic) {
       removeRelicByType(relic.type);
     }
     slot.dataset.relicId = String(relic.id);
-    slot.innerHTML = `<img src="${relic.icon}" alt="${relic.name}" class="relic-icon selected">`;
+    slot.innerHTML = `<img src="${relic.icon}" alt="${relic.name}" class="icon">`;
     updateURL();
     renderRelicSelection();
   }
@@ -136,14 +136,14 @@ function removeRelicByType(type: string) {
 
   if (slot) {
     slot.removeAttribute('data-relic-id');
-    slot.innerHTML = '<span class="relic-icon empty"></span>';
+    slot.innerHTML = '<span class="icon empty"></span>';
     updateURL();
     renderRelicSelection();
   }
 }
 
 function updateRelicSelectionUI() {
-  document.querySelectorAll<HTMLImageElement>('.relic-icon').forEach(icon => {
+  document.querySelectorAll<HTMLImageElement>('.relic-group .icon').forEach(icon => {
     const id = icon.dataset.id;
     const isSelected = document.querySelector(`.relic-slot[data-relic-id="${id}"]`);
 
@@ -188,7 +188,7 @@ function loadRelicsFromURL() {
 
     if (relic && slot) {
       slot.dataset.relicId = String(relic.id);
-      slot.innerHTML = `<img src="${relic.icon}" alt="${relic.name}" class="relic-icon selected">`;
+      slot.innerHTML = `<img src="${relic.icon}" alt="${relic.name}" class="icon">`;
     }
   });
 }

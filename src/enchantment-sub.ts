@@ -30,12 +30,13 @@ const SUB_OPTIONS: EnchantmentOption[] = [
 
 function renderSubOptions() {
   const container = document.getElementById('enchantment-sub-container') as HTMLDivElement;
-  const existingGrid = container.querySelector('.sub-options-grid');
+  const existingGrid = container.querySelector('#sub-options-grid');
   if (existingGrid) {
     existingGrid.remove();
   }
   const grid = document.createElement('div');
-  grid.classList.add('sub-options-grid');
+  grid.id = "sub-options-grid"
+  grid.classList.add('grid');
 
   SUB_OPTIONS.forEach(option => {
     const optionDiv = document.createElement('div');

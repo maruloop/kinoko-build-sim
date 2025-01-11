@@ -8,11 +8,6 @@
   grid-auto-flow: dense;
 }
 
-#enchantment-container h3{
-  margin: 0;
-  font-size: 1.1rem;
-}
-
 @media (max-width: 600px) {
   #enchantment-container {
     grid-template-columns: 1fr;
