@@ -114,46 +114,51 @@ function renderEmptySkillSlots() {
     selectedSkillsList.appendChild(skillSlot);
   }
 }
-
 function loadSkillsFromURL() {
   const params = new URLSearchParams(window.location.search);
   const skillString = params.get(QUERY_KEY);
-
-  renderEmptySkillSlots();
+  const skillMap = new Map<string, string>();
 
   if (skillString) {
-    const pairs = skillString.split(',').map(pair => pair.split(':'));
-
-    pairs.forEach(([slotStr, skillIdStr]) => {
-      const slot = document.querySelector(`.skill-slot[data-slot="${slotStr}"]`) as HTMLDivElement;
-      const skill = skills.find(s => s.id === parseInt(skillIdStr, 10));
-
-      if (skill && slot) {
-        slot.dataset.skillId = String(skill.id);
-        slot.innerHTML = '';
-
-        const skillImage = document.createElement('img');
-        skillImage.src = skill.icon;
-        skillImage.classList.add('icon');
-        skillImage.alt = skill.name;
-
-        addSafeEventListener(skillImage, 'click', () => {
-          const slotNumber = parseInt(slot.dataset.slot || '1', 10);
-          removeSkill(slotNumber);
-        });
-
-        slot.appendChild(skillImage);
-      }
+    skillString.split(',').forEach(pair => {
+      const [slotStr, skillIdStr] = pair.split(':');
+      skillMap.set(slotStr, skillIdStr);
     });
-    updateURL();
   }
+
+  const slots = document.querySelectorAll<HTMLDivElement>('.skill-slot');
+  slots.forEach(slot => {
+    const slotId = slot.dataset.slot!;
+    const skillId = skillMap.get(slotId);
+    const skill = skills.find(s => s.id === parseInt(skillId || '', 10));
+
+    if (skill) {
+      slot.dataset.skillId = String(skill.id);
+      slot.innerHTML = '';
+
+      const skillImage = document.createElement('img');
+      skillImage.src = skill.icon;
+      skillImage.classList.add('icon');
+      skillImage.alt = skill.name;
+
+      addSafeEventListener(skillImage, 'click', () => {
+        const slotNumber = parseInt(slot.dataset.slot || '1', 10);
+        removeSkill(slotNumber);
+      });
+
+      slot.appendChild(skillImage);
+    } else {
+      slot.dataset.skillId = '';
+      slot.innerHTML = '<span class="icon empty"></span>';
+    }
+  });
 }
 
 
-
 export function initSkillsUI() {
-  loadSkillsFromURL();
+  renderEmptySkillSlots();
   renderSkillSelection();
+  loadSkillsFromURL();
 
   const resetSkillsBtn = document.getElementById('reset-skills-btn') as HTMLButtonElement;
   addSafeEventListener(resetSkillsBtn, 'click', () => {
