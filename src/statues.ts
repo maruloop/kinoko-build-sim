@@ -6,8 +6,6 @@ interface StatueOption {
   name: string;
 }
 
-const MAX_STATUE_COUNT = 5;
-
 const statueOptions: StatueOption[] = [
   { id: 1, name: '攻撃乗算' },
   { id: 2, name: '体力乗算' },
@@ -20,65 +18,75 @@ const statueOptions: StatueOption[] = [
   { id: 9, name: '会心ダメ加算' },
   { id: 10, name: '会心抵抗' }
 ];
+
+const MAX_TOTAL = 5;
 const QUERY_KEY = 'statues';
 
-let totalStatueCount = 0;
-
-const statueList = document.getElementById('statue-list') as HTMLDivElement;
-const totalCountDisplay = document.getElementById('statue-total-count') as HTMLSpanElement;
-
 function renderInitialStatues() {
+  const statueList = document.getElementById('statue-list') as HTMLDivElement;
   statueList.innerHTML = '';
-  statueOptions.forEach((option, index) => {
+  const totalCountDisplay = document.getElementById('statue-total-count') as HTMLSpanElement;
+  statueOptions.forEach((option) => {
     const item = document.createElement('div');
     item.classList.add('statue-option-item');
     item.dataset.count = String(item.dataset.count || '0');
-    item.dataset.index = String(index);
+    item.dataset.id = String(option.id);
 
     item.innerHTML = `
             <span class="statue-option-name">${option.name}</span>
             <div class="statue-counter">
                 <button data-action="decrease">-</button>
-                <span class="statue-option-count">${item.dataset.count}</span>
+                <span class="count-display">${item.dataset.count}</span>
                 <button data-action="increase">+</button>
             </div>
         `;
+    item.querySelectorAll('button').forEach(button => {
+      addSafeEventListener(button, 'click', (event) => handleButtonClick(event, item, totalCountDisplay));
+    });
     statueList.appendChild(item);
   });
 
-  totalCountDisplay.textContent = `${totalStatueCount}`;
+  totalCountDisplay.textContent = '0';
+  totalCountDisplay.dataset.total = '0'
 }
 
+function handleButtonClick(event: Event, item: HTMLDivElement, totalCountDisplay: HTMLSpanElement){
+  const button = event.currentTarget as HTMLButtonElement;
+  const currentTotal = parseInt(totalCountDisplay.dataset.total || '0', 10);
+  const action = button.dataset.action;
+  let count = parseInt(item.dataset.count || '0', 10);
+  const display = item.querySelector('.count-display') as HTMLSpanElement;
 
-addSafeEventListener(statueList, 'click', (event) => {
-  const target = event.target as HTMLButtonElement;
-  const item = target.closest('.statue-option-item') as HTMLDivElement | null;
-
-  if (item) {
-    const index = Number(item.dataset.index);
-    let currentCount = parseInt(item.dataset.count || '0', 10);
-    const action = target.dataset.action;
-
-    if (action === 'increase' && totalStatueCount < MAX_STATUE_COUNT && currentCount < MAX_STATUE_COUNT) {
-      currentCount++;
-      totalStatueCount++;
-    } else if (action === 'decrease' && currentCount > 0) {
-      currentCount--;
-      totalStatueCount--;
-    }
-
-    item.dataset.count = String(currentCount);
-    const countDisplay = item.querySelector('.statue-counter span')!;
-    countDisplay.textContent = String(currentCount);
-    updateURL();
+  switch (action) {
+    case 'decrease':
+      count = Math.max(0, count - 1);
+      break;
+    case 'increase':
+      count = Math.min(5, currentTotal + 1 > MAX_TOTAL ? count + MAX_TOTAL - currentTotal : count + 1 );
+      break;
   }
-});
+
+  item.dataset.count = String(count);
+  display.textContent = String(count);
+  updateURL();
+  updateTotalCount(totalCountDisplay);
+}
+
+function updateTotalCount(totalCountDisplay: HTMLSpanElement) {
+  const items = document.querySelectorAll<HTMLDivElement>('.statue-option-item');
+  const totalCount = Array.from(items).reduce((sum, item) => {
+    return sum + parseInt(item.dataset.count || '0', 10);
+  }, 0);
+
+  totalCountDisplay.textContent = String(totalCount);
+  totalCountDisplay.dataset.total = String(totalCount);
+}
 
 function updateURL() {
   const params = new URLSearchParams(window.location.search);
   const selectedIds = Array.from(document.querySelectorAll<HTMLDivElement>('.statue-option-item[data-count]'))
     .filter(item => parseInt(item.dataset.count || '0', 10) > 0)
-    .map(item => `${item.dataset.index}:${item.dataset.count}`)
+    .map(item => `${item.dataset.id}:${item.dataset.count}`)
     .join(',');
 
   if (selectedIds) {
@@ -94,30 +102,32 @@ function loadStatuesFromURL() {
   const params = new URLSearchParams(window.location.search);
   const statueData = params.get(QUERY_KEY)?.split(',') || [];
 
-  renderInitialStatues();
-  totalStatueCount = 0;
+  let totalCount = 0;
 
-  statueData.forEach(entry => {
-    const [indexStr, countStr] = entry.split(':');
-    const index = parseInt(indexStr, 10);
-    const count = parseInt(countStr, 10);
+  const statueList = document.getElementById('statue-list') as HTMLDivElement;
+  statueList.querySelectorAll<HTMLDivElement>('.statue-option-item').forEach(item => {
+    const id = item.dataset.id;
+    if (!id) return;
 
-    const item = document.querySelector(
-      `.statue-option-item[data-index="${index}"]`
-    ) as HTMLDivElement;
+    const entry = statueData.find(data => data.startsWith(`${id}:`));
+    const count = entry ? parseInt(entry.split(':')[1], 10) : 0;
+    const remaining = MAX_TOTAL - totalCount;
+    const actualCount = Math.min(count, remaining);
 
-    if (item && !isNaN(count)) {
-      const actualCount = Math.min(count, MAX_STATUE_COUNT);
-      item.dataset.count = String(actualCount);
-      item.querySelector('span.statue-option-count')!.textContent = String(actualCount);
-      totalStatueCount += actualCount;
-    }
+    item.dataset.count = String(actualCount);
+    const countDisplay = item.querySelector('.count-display') as HTMLSpanElement;
+    countDisplay.textContent = String(actualCount);
+
+    totalCount += actualCount;
   });
 
-  totalCountDisplay.textContent = `${totalStatueCount}`;
+  const totalCountDisplay = document.getElementById('statue-total-count') as HTMLSpanElement;
+  totalCountDisplay.textContent = String(totalCount);
+  totalCountDisplay.dataset.total = String(totalCount);
 }
 
 export function initStatuesUI() {
+  renderInitialStatues();
   loadStatuesFromURL();
 
   const resetStatuesBtn = document.getElementById('reset-statues-btn') as HTMLButtonElement;

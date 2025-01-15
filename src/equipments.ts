@@ -29,7 +29,7 @@ function renderEquipments() {
     const item = document.createElement('div');
     item.classList.add('equipments-option-item');
     item.dataset.count = '0';
-    item.dataset.id = option.id;
+    item.dataset.id = String(option.id);
 
     item.innerHTML = `
       <span class="equipments-option-name">${option.name}</span>
@@ -54,8 +54,7 @@ function renderEquipments() {
 
 function handleButtonClick(event: Event, item: HTMLDivElement, totalCountDisplay: HTMLSpanElement) {
   const button = event.currentTarget as HTMLButtonElement;
-  const totalElement = document.getElementById('equipments-total-count') as HTMLDivElement;
-  const currentTotal = parseInt(totalElement.dataset.total, 10);
+  const currentTotal = parseInt(totalCountDisplay.dataset.total || '0', 10);
   const action = button.dataset.action;
   let count = parseInt(item.dataset.count || '0', 10);
   const display = item.querySelector('.count-display') as HTMLSpanElement;
@@ -68,15 +67,15 @@ function handleButtonClick(event: Event, item: HTMLDivElement, totalCountDisplay
       count = Math.max(0, count - 1);
       break;
     case 'increase':
-      count = Math.min(10, currentTotal + 1 > 20 ? count + 20 - currentTotal : count + 1);
+      count = Math.min(10, currentTotal + 1 > MAX_TOTAL ? count + MAX_TOTAL - currentTotal : count + 1);
       break;
     case 'increase10':
-      count = Math.min(10, currentTotal + 10 > 20 ? count + 20 - currentTotal : count + 10);
+      count = Math.min(10, currentTotal + 10 > MAX_TOTAL ? count + MAX_TOTAL - currentTotal : count + 10);
       break;
   }
 
-  item.dataset.count = count.toString();
-  display.textContent = count.toString();
+  item.dataset.count = String(count);
+  display.textContent = String(count);
 
   updateTotalCount(totalCountDisplay);
   updateURL();
@@ -84,13 +83,12 @@ function handleButtonClick(event: Event, item: HTMLDivElement, totalCountDisplay
 
 function updateTotalCount(totalCountDisplay: HTMLSpanElement) {
   const items = document.querySelectorAll<HTMLDivElement>('.equipments-option-item');
-  const totalElement = document.getElementById('equipments-total-count') as HTMLDivElement;
   const totalCount = Array.from(items).reduce((sum, item) => {
     return sum + parseInt(item.dataset.count || '0', 10);
   }, 0);
 
-  totalCountDisplay.textContent = totalCount.toString();
-  totalElement.dataset.total = totalCount.toString();
+  totalCountDisplay.textContent = String(totalCount);
+  totalCountDisplay.dataset.total = String(totalCount);
 }
 
 function updateURL() {
