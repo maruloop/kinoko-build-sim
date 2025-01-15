@@ -57,6 +57,7 @@ const relics: Relic[] = [
 ];
 
 const QUERY_KEY = 'relics';
+const EMPTY_ICON = '<span class="icon empty"></span>';
 
 function renderEmptyRelicSlots() {
   const selectedRelicsList = document.getElementById('selected-relics') as HTMLDivElement;
@@ -67,7 +68,7 @@ function renderEmptyRelicSlots() {
     slot.classList.add('relic-slot');
     slot.dataset.slot = String(index);
     slot.dataset.type = type;
-    slot.innerHTML = '<span class="icon empty"></span>';
+    slot.innerHTML = EMPTY_ICON;
     selectedRelicsList.appendChild(slot);
   });
 }
@@ -123,12 +124,9 @@ function toggleRelicSelection(relic: Relic) {
     }
     slot.dataset.relicId = String(relic.id);
     slot.innerHTML = `<img src="${relic.icon}" alt="${relic.name}" class="icon">`;
-    updateURL();
-    renderRelicSelection();
   }
   updateURL();
   renderRelicSelection();
-
 }
 
 function removeRelicByType(type: string) {
@@ -136,9 +134,7 @@ function removeRelicByType(type: string) {
 
   if (slot) {
     slot.removeAttribute('data-relic-id');
-    slot.innerHTML = '<span class="icon empty"></span>';
-    updateURL();
-    renderRelicSelection();
+    slot.innerHTML = EMPTY_ICON;
   }
 }
 
@@ -178,25 +174,31 @@ function loadRelicsFromURL() {
   const params = new URLSearchParams(window.location.search);
   const relicIds = params.get(QUERY_KEY)?.split(',').map(id => parseInt(id, 10)) || [];
 
-  renderEmptyRelicSlots();
+  const slots = document.querySelectorAll<HTMLDivElement>('.relic-slot');
+  slots.forEach(slot => {
+    const relicType = slot.dataset.type;
+    const relic = relics.find(r => r.type === relicType && relicIds.includes(r.id) );
 
-  relicIds.forEach(id => {
-    const relic = relics.find(r => r.id === id);
-    const slot = document.querySelector(
-      `.relic-slot[data-type="${relic?.type}"]:not([data-relic-id])`
-    ) as HTMLDivElement;
-
-    if (relic && slot) {
+    if (relic) {
       slot.dataset.relicId = String(relic.id);
-      slot.innerHTML = `<img src="${relic.icon}" alt="${relic.name}" class="icon">`;
+      slot.innerHTML = '';
+      const relicImage = document.createElement('img');
+      relicImage.src = relic.icon;
+      relicImage.classList.add('icon');
+      relicImage.alt = relic.name;
+      slot.appendChild(relicImage);
+    } else {
+      slot.removeAttribute('data-relic-id');
+      slot.innerHTML = EMPTY_ICON;
     }
   });
+  updateRelicSelectionUI();
 }
 
 export function initRelicsUI() {
   renderEmptyRelicSlots();
-  loadRelicsFromURL();
   renderRelicSelection();
+  loadRelicsFromURL();
   const resetRelicsBtn = document.getElementById('reset-relics-btn') as HTMLButtonElement;
   addSafeEventListener(resetRelicsBtn, 'click', () => {
     showResetModal([QUERY_KEY], '遺物');
