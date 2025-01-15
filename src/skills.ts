@@ -4,6 +4,7 @@ import { addSafeEventListener } from './helper';
 
 const MAX_SLOTS = 5;
 const QUERY_KEY = 'skills';
+const EMPTY_ICON = '<span class="icon empty"></span>';
 
 function renderSkillSelection() {
   const skillsList = document.getElementById('skill-list') as HTMLDivElement;
@@ -62,7 +63,7 @@ function removeSkill(slot: number) {
 
   if (slotElement) {
     slotElement.removeAttribute('data-skill-id');
-    slotElement.innerHTML = '<span class="icon empty"></span>';
+    slotElement.innerHTML = EMPTY_ICON;
   }
 
   renderSkillSelection();
@@ -110,21 +111,20 @@ function renderEmptySkillSlots() {
     const skillSlot = document.createElement('div');
     skillSlot.classList.add('skill-slot');
     skillSlot.dataset.slot = String(i);
-    skillSlot.innerHTML = '<span class="icon empty"></span>';
+    skillSlot.innerHTML = EMPTY_ICON;
     selectedSkillsList.appendChild(skillSlot);
   }
 }
 function loadSkillsFromURL() {
   const params = new URLSearchParams(window.location.search);
   const skillString = params.get(QUERY_KEY);
-  const skillMap = new Map<string, string>();
 
-  if (skillString) {
-    skillString.split(',').forEach(pair => {
+  const skillMap = new Map(
+    (skillString || '').split(',').map(pair => {
       const [slotStr, skillIdStr] = pair.split(':');
-      skillMap.set(slotStr, skillIdStr);
-    });
-  }
+      return [slotStr, skillIdStr];
+    })
+  );
 
   const slots = document.querySelectorAll<HTMLDivElement>('.skill-slot');
   slots.forEach(slot => {
@@ -148,10 +148,11 @@ function loadSkillsFromURL() {
 
       slot.appendChild(skillImage);
     } else {
-      slot.dataset.skillId = '';
-      slot.innerHTML = '<span class="icon empty"></span>';
+      slot.removeAttribute('data-skill-id');
+      slot.innerHTML = EMPTY_ICON;
     }
   });
+  updateSkillSelectionUI();
 }
 
 

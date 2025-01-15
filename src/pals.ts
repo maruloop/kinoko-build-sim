@@ -4,6 +4,7 @@ import { showResetModal } from './resetModal';
 import { addSafeEventListener } from './helper';
 
 const QUERY_KEY = 'pals';
+const EMPTY_ICON = '<span class="icon empty"></span>';
 
 function renderPalSelection() {
   const palsList = document.getElementById('pal-list') as HTMLDivElement;
@@ -23,6 +24,7 @@ function renderPalSelection() {
 }
 
 function togglePal(pal: Pal) {
+  console.log('toggle');
   const existingSlot = document.querySelector(
     `.pal-slot[data-pal-id="${pal.id}"]`
   ) as HTMLDivElement | null;
@@ -31,9 +33,11 @@ function togglePal(pal: Pal) {
     const slotNumber = parseInt(existingSlot.dataset.slot || '1', 10);
     removePal(slotNumber);
   } else {
+    console.log('add');
     const emptySlot = document.querySelector(
       '.pal-slot:not([data-pal-id])'
     ) as HTMLDivElement;
+    console.log(emptySlot);
 
     if (emptySlot) {
       emptySlot.dataset.palId = String(pal.id);
@@ -61,7 +65,7 @@ function removePal(slot: number) {
 
   if (slotElement) {
     slotElement.removeAttribute('data-pal-id');
-    slotElement.innerHTML = '<span class="icon empty"></span>';
+    slotElement.innerHTML = EMPTY_ICON;
   }
 
   renderPalSelection();
@@ -111,7 +115,7 @@ function renderEmptySelectedPals() {
     const palSlot = document.createElement('div');
     palSlot.classList.add('pal-slot');
     palSlot.dataset.slot = String(i);
-    palSlot.innerHTML = '<span class="icon empty"></span>';
+    palSlot.innerHTML = EMPTY_ICON;
     selectedPalsList.appendChild(palSlot);
   }
 }
@@ -119,36 +123,40 @@ function renderEmptySelectedPals() {
 function loadPalsFromURL() {
   const params = new URLSearchParams(window.location.search);
   const palString = params.get(QUERY_KEY);
+  const palMap = new Map(
+    (palString || '').split(',').map(pair => {
+      const [slotStr, palIdStr] = pair.split(':');
+      return [slotStr, palIdStr];
+    })
+  );
 
-  renderEmptySelectedPals();
+  const slots = document.querySelectorAll<HTMLDivElement>('.pal-slot');
+  slots.forEach(slot => {
+    const slotId = slot.dataset.slot!;
+    const palId = palMap.get(slotId);
+    const pal = pals.find(p => p.id === parseInt(palId || '', 10));
 
-  if (palString) {
-    const pairs = palString.split(',').map(pair => pair.split(':'));
+    if (pal){
+      slot.dataset.palId = String(pal.id);
+      slot.innerHTML = '';
 
-    pairs.forEach(([slotStr, palIdStr]) => {
-      const slot = document.querySelector(`.pal-slot[data-slot="${slotStr}"]`) as HTMLDivElement;
-      const pal = pals.find(p => p.id === parseInt(palIdStr, 10));
+      const palImage = document.createElement('img');
+      palImage.src = pal.icon;
+      palImage.classList.add('icon');
+      palImage.alt = pal.name;
 
-      if (slot && pal) {
-        slot.dataset.palId = String(pal.id);
-        slot.innerHTML = '';
+      addSafeEventListener(palImage, 'click', () => {
+        const slotNumber = parseInt(slot.dataset.slot || '1', 10);
+        removePal(slotNumber);
+      });
 
-        const palImage = document.createElement('img');
-        palImage.src = pal.icon;
-        palImage.alt = pal.name;
-        palImage.classList.add('icon');
-        palImage.dataset.palId = String(pal.id);
-
-        addSafeEventListener(palImage, 'click', () => {
-          const slotNumber = parseInt(slot.dataset.slot || '1', 10);
-          removePal(slotNumber);
-        });
-
-        slot.appendChild(palImage);
-      }
-    });
-    updateURL();
-  }
+      slot.appendChild(palImage);
+    } else {
+      slot.removeAttribute('data-pal-id');
+      slot.innerHTML = EMPTY_ICON;
+    }
+  });
+  updatePalSelectionUI();
 }
 
 export function updatePalLimitOnJobChange() {
@@ -178,8 +186,9 @@ export function updatePalLimitOnJobChange() {
 }
 
 export function initPalsUI() {
-  loadPalsFromURL();
+  renderEmptySelectedPals();
   renderPalSelection();
+  loadPalsFromURL();
 
   const resetPalsBtn = document.getElementById('reset-pals-btn') as HTMLButtonElement;
   addSafeEventListener(resetPalsBtn, 'click', () => {
