@@ -19,8 +19,8 @@ const ENCHANTMENT_SETS: EnchantmentSets[] = [
 const MAX_TOTAL = 6;
 
 function renderEnchantmentSets() {
-  const container = document.getElementById('enchantment-sets-container') as HTMLDivElement;
-  const existingItems = container.querySelectorAll('.enchantment-set-item');
+  const list = document.getElementById('enchantment-sets-list') as HTMLDivElement;
+  const existingItems = list.querySelectorAll('.enchantment-set-item');
   existingItems.forEach(item => {
     item.remove();
   });
@@ -28,7 +28,7 @@ function renderEnchantmentSets() {
   ENCHANTMENT_SETS.forEach(set => {
     const item = document.createElement('div');
     item.classList.add('enchantment-set-item');
-    item.dataset.type = String(set.id);
+    item.dataset.id = String(set.id);
     item.dataset.count = '0';
 
     const setName = document.createElement('span');
@@ -63,20 +63,20 @@ function renderEnchantmentSets() {
     item.appendChild(setName);
     item.appendChild(checkboxGroup);
 
-    container.appendChild(item);
+    list.appendChild(item);
   });
 }
 
 function adjustEnchantmentSet(item: HTMLDivElement, value: number, checked: boolean) {
   const currentCount = parseInt(item.dataset.count || '0', 10);
   const newCount = checked ? currentCount + value : currentCount - value;
-  const container = document.getElementById('enchantment-sets-container') as HTMLDivElement;
-  const currentTotal = parseInt(container.dataset.total || '0', 10);
+  const list = document.getElementById('enchantment-sets-list') as HTMLDivElement;
+  const currentTotal = parseInt(list.dataset.total || '0', 10);
   const newTotal = currentTotal + (checked ? value : -value);
 
   if (newTotal <= MAX_TOTAL) {
     item.dataset.count = String(newCount);
-    container.dataset.total = String(newTotal);
+    list.dataset.total = String(newTotal);
     updateURL();
   } else {
     const checkbox = item.querySelector(`input[data-value="${value}"]`) as HTMLInputElement;
@@ -99,9 +99,9 @@ function updateURL() {
     '.enchantment-set-item input:checked'
   )).map(checkbox => {
     const item = checkbox.closest('.enchantment-set-item') as HTMLDivElement;
-    const type = item.dataset.type;
+    const id = item.dataset.id;
     const value = checkbox.dataset.value;
-    return `${type}:${value}`;
+    return `${id}:${value}`;
   }).join(',');
 
   if (selectedSets) {
@@ -117,27 +117,38 @@ function updateURL() {
 function loadEnchantmentsFromURL() {
   const params = new URLSearchParams(window.location.search);
   const setsString = params.get(SETS_QUERY_KEY);
-  const container = document.getElementById('enchantment-sets-container') as HTMLDivElement;
-  container.dataset.total = '0';
+  const setsData = (setsString || '').split(',');
+  const list = document.getElementById('enchantment-sets-list') as HTMLDivElement;
 
-  renderEnchantmentSets();
+  let totalCount = 0;
+  list.querySelectorAll<HTMLDivElement>('.enchantment-set-item').forEach(item => {
+    const setId = item.dataset.id;
+    if (!setId) return;
 
-  if (setsString) {
-    const pairs = setsString.split(',').map(pair => pair.split(':'));
+    const enchantmentSet = ENCHANTMENT_SETS.find(s => s.id === parseInt(setId,10) && setsData.some(s => s.startsWith(`${setId}:`)));
+    if(enchantmentSet){
+      const values = setsData
+        .filter(data => data.startsWith(`${setId}:`))
+        .map(data => parseInt(data.split(':')[1], 10));
 
-    pairs.forEach(([type, value]) => {
-      const item = container.querySelector(`.enchantment-set-item[data-type="${type}"]`) as HTMLDivElement;
-      const checkbox = item.querySelector(`input[data-value="${value}"]`) as HTMLInputElement;
-
-      if (checkbox) {
-        checkbox.checked = true;
-        adjustEnchantmentSet(item, parseInt(value, 10), true);
-      }
+      values.forEach(value => {
+        const checkbox = item.querySelector<HTMLInputElement>(`input[data-value="${value}"]`);
+        if (checkbox) {
+          checkbox.checked = true;
+          totalCount += value;
+        }
+      });
+    } else {
+    item.querySelectorAll<HTMLInputElement>('input').forEach(item => {
+      item.checked = false;
     });
-  }
+    }
+  });
+  list.dataset.total = String(totalCount);
 }
 
 export function initEnchantmentSetsUI() {
+  renderEnchantmentSets();
   loadEnchantmentsFromURL();
   const checkboxes = document.querySelectorAll<HTMLInputElement>(
     '.enchantment-set-item input[type="checkbox"]'

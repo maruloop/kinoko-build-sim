@@ -23,21 +23,21 @@ const MAIN_OPTIONS: EnchantmentMain[] = [
     id: 2,
     name: 'Ⅴ',
     options: [
-      { id: 11, name: '連撃ダメージ軽減' },
-      { id: 12, name: '反撃ダメージ軽減' },
-      { id: 13, name: '仲間ダメージ軽減' },
-      { id: 14, name: '通常攻撃ダメージ軽減' },
+      { id: 6, name: '連撃ダメージ軽減' },
+      { id: 7, name: '反撃ダメージ軽減' },
+      { id: 8, name: '仲間ダメージ軽減' },
+      { id: 9, name: '通常攻撃ダメージ軽減' },
     ],
   },
   {
     id: 3,
     name: 'Ⅵ',
     options: [
-      { id: 21, name: '会心ダメ加算' },
-      { id: 22, name: '会心抵抗加算' },
-      { id: 23, name: '技能ダメージ軽減' },
-      { id: 24, name: 'ボスダメージ' },
-      { id: 25, name: 'ボスダメージ軽減' },
+      { id: 10, name: '会心ダメ加算' },
+      { id: 11, name: '会心抵抗加算' },
+      { id: 12, name: '技能ダメージ軽減' },
+      { id: 13, name: 'ボスダメージ' },
+      { id: 14, name: 'ボスダメージ軽減' },
     ],
   },
 ]
@@ -59,7 +59,7 @@ function renderEnchantMain() {
     label.textContent = `${main.name}:`;
 
     const select = document.createElement('select');
-    select.dataset.part = main.id;
+    select.dataset.part = String(main.id);
 
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
