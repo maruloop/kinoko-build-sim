@@ -42,6 +42,8 @@ const MOUNTS: Mount[] = [
     { id: 32, name: 'ラム酒樽', icon: 'icons/mounts/32.jpg' },
 ];
 
+const EMPTY_ICON = '<span class="icon empty"></span>';
+
 function renderMountSelection() {
     const mountsGrid = document.getElementById('mount-list') as HTMLDivElement;
     mountsGrid.innerHTML = '';
@@ -66,7 +68,7 @@ function toggleMount(mount: Mount) {
 
     if (selectedMountId === String(mount.id)) {
         mountSlot.removeAttribute('data-mount-id');
-        mountSlot.innerHTML = '<span class="icon empty"></span>';
+        mountSlot.innerHTML = EMPTY_ICON;
         updateURL(null);
     } else {
         mountSlot.dataset.mountId = String(mount.id);
@@ -79,7 +81,7 @@ function toggleMount(mount: Mount) {
 
         addSafeEventListener(mountImage, 'click', () => {
             mountSlot.removeAttribute('data-mount-id');
-            mountSlot.innerHTML = '<span class="icon empty"></span>';
+            mountSlot.innerHTML = EMPTY_ICON;
             updateMountSelectionUI();
             updateURL(null);
         });
@@ -108,14 +110,14 @@ function updateURL(mountId: number | null) {
     const params = new URLSearchParams(window.location.search);
 
     if (mountId !== null) {
-      params.set(MOUNTS_QUERY_KEY, String(mountId));
+        params.set(MOUNTS_QUERY_KEY, String(mountId));
     } else {
-      params.delete(MOUNTS_QUERY_KEY);
+        params.delete(MOUNTS_QUERY_KEY);
     }
 
     const newPath = params.toString() ? '?' + params.toString() : window.location.pathname;
     history.replaceState(null, '', newPath);
-  }
+}
 
 function loadMountFromURL() {
     const params = new URLSearchParams(window.location.search);
@@ -130,7 +132,7 @@ function loadMountFromURL() {
             mountSlot.innerHTML = `<img src="${mount.icon}" alt="${mount.name}" class="icon">`;
         }
     } else {
-        mountSlot.innerHTML = '<span class="icon empty"></span>';
+        mountSlot.innerHTML = EMPTY_ICON;
         mountSlot.removeAttribute('data-mount-id');
     }
     updateMountSelectionUI();
