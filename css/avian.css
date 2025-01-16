@@ -1,0 +1,60 @@
+#avian-status-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 20vw, 200px), 1fr));
+  gap: clamp(8px, 2vw, 16px);
+  justify-content: center;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+.avian-status-item {
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
+  border: 1px solid;
+  border-radius: clamp(6px, 1vw, 12px);
+  font-size: clamp(14px, 1vw, 16px);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  user-select: none;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.avian-status-item.yellow {
+  border: 2px solid #FFD700;
+  background-color: #FFFBEA;
+}
+.avian-status-item.yellow.selected {
+  background-color: #CCAA00;
+  color: #FFFFFF;
+  border-color: #FFC300;
+}
+
+.avian-status-item.blue {
+  border: 2px solid #00AEEF;
+  background-color: #EAF7FF;
+}
+.avian-status-item.blue.selected {
+  background-color: #0078A0;
+  color: #FFFFFF;
+  border-color: #009FDA;
+}
+
+.avian-status-item.purple {
+  border: 2px solid #A020F0;
+  background-color: #F5EAFB;
+}
+.avian-status-item.purple.selected {
+  background-color: #6A0DAD;
+  color: #FFFFFF;
+  border-color: #8B1CE0;
+}
+
+.avian-status-item.rainbow {
+  background: linear-gradient(to right, #80d4f3, #d7acf2);
+}
+
+.avian-status-item.rainbow.selected {
+  background: linear-gradient(to right, #00AEEF, #A020F0) !important;
+  color: #FFFFFF;
+}
