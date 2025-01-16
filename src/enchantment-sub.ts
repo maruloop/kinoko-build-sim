@@ -27,14 +27,13 @@ const SUB_OPTIONS: EnchantmentOption[] = [
   { id: 23, name: 'ボスダメージ軽減' },
 ]
 
-
 function renderSubOptions() {
   const list = document.getElementById('enchantment-sub-list') as HTMLDivElement;
   list.innerHTML = '';
 
   SUB_OPTIONS.forEach(option => {
     const optionDiv = document.createElement('div');
-    optionDiv.classList.add('sub-option-item');
+    optionDiv.classList.add('enchantment-sub-option-item');
     optionDiv.textContent = option.name;
     optionDiv.dataset.id = String(option.id);
 
@@ -47,7 +46,7 @@ function renderSubOptions() {
 function handleSubOptionClick(event: Event) {
   const target = event.target as HTMLDivElement;
 
-  if (target.classList.contains('sub-option-item')) {
+  if (target.classList.contains('enchantment-sub-option-item')) {
     target.classList.toggle('selected');
     updateURL();
   }
@@ -56,7 +55,7 @@ function handleSubOptionClick(event: Event) {
 function updateURL() {
   const params = new URLSearchParams(window.location.search);
   const selected = Array.from(document.querySelectorAll<HTMLDivElement>(
-    '.sub-option-item.selected'
+    '.enchantment-sub-option-item.selected'
   )).map(item => item.dataset.id);
 
   if (selected.length > 0) {
@@ -72,14 +71,15 @@ function updateURL() {
 function loadSubOptionsFromURL() {
   const params = new URLSearchParams(window.location.search);
   const selectedIds = params.get(SUB_QUERY_KEY)?.split(',') || [];
+  const optionElements = document.querySelectorAll<HTMLDivElement>('.enchantment-sub-option-item');
 
-  selectedIds.forEach(id => {
-    const optionDiv = document.querySelector(
-      `.sub-option-item[data-id="${id}"]`
-    ) as HTMLDivElement;
-
-    if (optionDiv) {
-      optionDiv.classList.add('selected');
+  optionElements.forEach(optionElement => {
+    const optionId = optionElement.dataset.id;
+    const option = SUB_OPTIONS.find(op => optionId === String(op.id) && selectedIds.includes(String(op.id)));
+    if (option) {
+      optionElement.classList.add('selected');
+    } else {
+      optionElement.classList.remove('selected');
     }
   });
 }
