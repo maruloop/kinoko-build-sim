@@ -42,7 +42,6 @@ const MAIN_OPTIONS: EnchantmentMain[] = [
   },
 ]
 
-
 function renderEnchantMain() {
   const container = document.getElementById('enchantment-main-container') as HTMLDivElement;
   const existingSections = container.querySelectorAll('.enchantment-part');
@@ -60,6 +59,7 @@ function renderEnchantMain() {
 
     const select = document.createElement('select');
     select.dataset.part = String(main.id);
+    select.classList.add('enchantment-main')
 
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
@@ -84,22 +84,22 @@ function renderEnchantMain() {
   });
 }
 
-function updateURL(event: Event) {
-  const select = event.target as HTMLSelectElement;
-  const part = select.dataset.part;  // A, B, C など
-  const selectedOption = select.selectedOptions[0];
-  const selectedId = selectedOption.dataset.id;
-
+function updateURL() {
   const params = new URLSearchParams(window.location.search);
-  const currentSelections = params.get(MAIN_QUERY_KEY)?.split(',') || [];
-  const updatedSelections = currentSelections.filter(pair => !pair.startsWith(`${part}:`));
+  const selections: string[] = [];
 
-  if (selectedId) {
-    updatedSelections.push(`${part}:${selectedId}`);
-  }
+  document.querySelectorAll<HTMLSelectElement>('select.enchantment-main').forEach(select => {
+    const part = select.dataset.part;
+    const selectedOption = select.selectedOptions[0];
+    const selectedId = selectedOption?.dataset.id;
 
-  if (updatedSelections.length > 0) {
-    params.set(MAIN_QUERY_KEY, updatedSelections.join(','));
+    if (part && selectedId) {
+      selections.push(`${part}:${selectedId}`);
+    }
+  });
+
+  if (selections.length > 0) {
+    params.set(MAIN_QUERY_KEY, selections.join(','));
   } else {
     params.delete(MAIN_QUERY_KEY);
   }
@@ -110,38 +110,27 @@ function updateURL(event: Event) {
 
 function loadEnchantMainFromURL() {
   const params = new URLSearchParams(window.location.search);
-  const setsString = params.get(MAIN_QUERY_KEY);
+  const mainString = params.get(MAIN_QUERY_KEY);
+  const mainMap = new Map(
+    (mainString || '').split(',').map(pair => {
+      const [partId, mainId] = pair.split(':');
+      return [partId, mainId];
+    })
+  );
 
-  if (setsString) {
-    const pairs = setsString.split(',');
+  const selects = document.querySelectorAll<HTMLSelectElement>('select.enchantment-main');
+  selects.forEach(select => {
+    const partId = select.dataset.part;
+    const mainId = mainMap.get(partId);
+    const enchantmentPart = MAIN_OPTIONS.find(p => p.id === Number(partId) );
+    const enchantmentOption = enchantmentPart?.options.find(op => op.id === parseInt(mainId || '', 10));
 
-    pairs.forEach(pair => {
-      const [part, selectedId] = pair.split(':');
-      const select = document.querySelector(
-        `select[data-part="${part}"]`
-      ) as HTMLSelectElement;
-
-      if (select) {
-        const option = select.querySelector(
-          `option[data-id="${selectedId}"]`
-        ) as HTMLOptionElement;
-
-        if (option) {
-          select.value = option.value;
-        }
-      }
-    });
-  } else {
-    MAIN_OPTIONS.forEach((main) => {
-      const select = document.querySelector(
-        `select[data-part="${main.id}"]`
-      ) as HTMLSelectElement;
-
-      if (select) {
-        select.selectedIndex = 0;
-      }
-    });
-  }
+    if(enchantmentOption){
+      select.value = enchantmentOption.name;
+    }else{
+      select.selectedIndex = 0;
+    }
+  });
 }
 
 export function initEnchantmentMainUI() {
