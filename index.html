@@ -253,8 +253,21 @@
         </section>
 
         <section id="avian">
-            <h2>ペット</h2>
-            <p>ペットを選択します。</p>
+            <div class="section-header">
+                <h2>ペット</h2>
+                <button id="reset-avian-btn" class="reset-btn" title="ペットをリセット">↺</button>
+            </div>
+            <div id="avian-container" class="container">
+                <div class="avian-selected">
+                    <h3>選択済みペット</h3>
+                    <div id="selected-avian" class="selected-grid"></div>
+                </div>
+
+                <div class="avians-pool">
+                    <h3>ペット一覧</h3>
+                    <div id="avian-list" class="pool-grid"></div>
+                </div>
+            </div>
         </section>
 
         <section id="souls">

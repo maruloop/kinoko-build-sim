@@ -4,9 +4,9 @@ import { initMountUI } from './mounts';
 import { initArtifactUI } from './artifacts';
 import { initBackAccessoryUI } from './back-accessories';
 
-export const MOUNTS_QUERY_KEY = 'mounts';
-export const ARTIFACTS_QUERY_KEY = 'artifacts'
-export const BACK_ACCESSORIES_QUERY_KEY = 'back-accessories'
+export const MOUNTS_QUERY_KEY = 'mount';
+export const ARTIFACTS_QUERY_KEY = 'artifact'
+export const BACK_ACCESSORIES_QUERY_KEY = 'back-accessory'
 
 export function initMountsArtifactsBackAccessoriesUI() {
   initMountUI();
