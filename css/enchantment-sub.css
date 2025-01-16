@@ -1,4 +1,4 @@
-#sub-options-grid {
+#enchantment-sub-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 20vw, 200px), 1fr));
   gap: clamp(8px, 2vw, 16px);

@@ -43,8 +43,8 @@ const MAIN_OPTIONS: EnchantmentMain[] = [
 ]
 
 function renderEnchantMain() {
-  const container = document.getElementById('enchantment-main-container') as HTMLDivElement;
-  const existingSections = container.querySelectorAll('.enchantment-part');
+  const list = document.getElementById('enchantment-main-list') as HTMLDivElement;
+  const existingSections = list.querySelectorAll('.enchantment-part');
   existingSections.forEach(section => {
     section.remove();
   });
@@ -78,7 +78,7 @@ function renderEnchantMain() {
 
     section.appendChild(label);
     section.appendChild(select);
-    container.appendChild(section);
+    list.appendChild(section);
 
     addSafeEventListener(select, 'change', updateURL);
   });

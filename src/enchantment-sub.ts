@@ -29,14 +29,8 @@ const SUB_OPTIONS: EnchantmentOption[] = [
 
 
 function renderSubOptions() {
-  const container = document.getElementById('enchantment-sub-container') as HTMLDivElement;
-  const existingGrid = container.querySelector('#sub-options-grid');
-  if (existingGrid) {
-    existingGrid.remove();
-  }
-  const grid = document.createElement('div');
-  grid.id = "sub-options-grid"
-  grid.classList.add('grid');
+  const list = document.getElementById('enchantment-sub-list') as HTMLDivElement;
+  list.innerHTML = '';
 
   SUB_OPTIONS.forEach(option => {
     const optionDiv = document.createElement('div');
@@ -44,12 +38,10 @@ function renderSubOptions() {
     optionDiv.textContent = option.name;
     optionDiv.dataset.id = String(option.id);
 
-    grid.appendChild(optionDiv);
+    list.appendChild(optionDiv);
   });
 
-  container.appendChild(grid);
-
-  addSafeEventListener(grid, 'click', handleSubOptionClick);
+  addSafeEventListener(list, 'click', handleSubOptionClick);
 }
 
 function handleSubOptionClick(event: Event) {
