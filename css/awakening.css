@@ -1,0 +1,62 @@
+.awakening-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px auto;
+  max-width: 600px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.awakening-option-name {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.awakening-option-select {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.awakening-option-select:hover {
+  border-color: #999;
+}
+
+.awakening-option-select:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.awakening-counter {
+  display: flex;
+  align-items: center;
+}
+
+.awakening-counter button {
+  padding: clamp(4px, 1vw, 8px) clamp(10px, 2vw, 16px);
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
+  border: 1px solid #999;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.awakening-counter span {
+  margin: 0 clamp(6px, 1.5vw, 12px);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+}
+
+.awakening-summary {
+  margin-top: clamp(16px, 3vw, 32px);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: bold;
+}

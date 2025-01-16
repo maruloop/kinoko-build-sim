@@ -9,6 +9,7 @@ import { initEnchantmentsUI } from './enchantment';
 import { initMountsArtifactsBackAccessoriesUI } from './mounts-artifacts-back-accessories';
 import { initAvianUI } from './avians';
 import { initSoulsUI } from './souls';
+import { initAwakeningUI } from './awakening';
 
 export function updateAllUI() {
   initSummaryUI();
@@ -19,6 +20,7 @@ export function updateAllUI() {
   initRelicsUI();
   initStatuesUI();
   initEnchantmentsUI();
+  initAwakeningUI();
   initMountsArtifactsBackAccessoriesUI();
   initAvianUI();
   initSoulsUI();
