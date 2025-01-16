@@ -1,0 +1,69 @@
+.souls-main-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px auto;
+  max-width: 600px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.souls-main-option-name {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+.souls-main-counter {
+  display: flex;
+  align-items: center;
+}
+
+.souls-main-counter button {
+  padding: clamp(4px, 1vw, 8px) clamp(10px, 2vw, 16px);
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
+  border: 1px solid #999;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.souls-main-counter span {
+  margin: 0 clamp(6px, 1.5vw, 12px);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+}
+
+#souls-sub-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(120px, 20vw, 200px), 1fr));
+  gap: clamp(8px, 2vw, 16px);
+  justify-content: center;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+.souls-sub-option-item {
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
+  border: 1px solid #ddd;
+  border-radius: clamp(6px, 1vw, 12px);
+  font-size: clamp(14px, 1vw, 16px);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  user-select: none;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.souls-sub-option-item:hover {
+  background-color: #f0f0f0;
+}
+
+.souls-sub-option-item.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
