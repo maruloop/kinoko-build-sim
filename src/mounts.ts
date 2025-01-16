@@ -40,6 +40,7 @@ const MOUNTS: Mount[] = [
     { id: 30, name: '青の女王', icon: 'icons/mounts/30.jpg' },
     { id: 31, name: '丸々蛙', icon: 'icons/mounts/31.jpg' },
     { id: 32, name: 'ラム酒樽', icon: 'icons/mounts/32.jpg' },
+    { id: 33, name: 'ガッツウィング1号', icon: 'icons/mounts/33.jpg' },
 ];
 
 const EMPTY_ICON = '<span class="icon empty"></span>';
