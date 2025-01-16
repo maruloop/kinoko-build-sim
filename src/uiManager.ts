@@ -7,6 +7,7 @@ import { initRelicsUI } from './relics';
 import { initStatuesUI } from './statues';
 import { initEnchantmentsUI } from './enchantment';
 import { initMountsArtifactsBackAccessoriesUI } from './mounts-artifacts-back-accessories';
+import { initAvianUI } from './avians';
 
 export function updateAllUI() {
   initSummaryUI();
@@ -18,4 +19,5 @@ export function updateAllUI() {
   initStatuesUI();
   initEnchantmentsUI();
   initMountsArtifactsBackAccessoriesUI();
+  initAvianUI();
 }
