@@ -553,7 +553,7 @@ function handleLevelDown(nodeElement: HTMLElement, graph: JobTalentGraph) {
     if(endNode){
       const endNodeId = `jobTalentGraph-${graph.id}-${position}-${endNode.id}`;
       const endNodeElement = treeElement.querySelector<HTMLElement>(`[data-node-id="${endNodeId}"]`);
-      if (parseInt(endNodeElement?.dataset.currentLevel || '0', 10) === 0) {
+      if (parseInt(endNodeElement?.dataset.currentLevel || '0', 10) === 0 && treeElement.dataset.treeStatus === TreeStatus.COMPLETED) {
         treeElement.dataset.treeStatus = TreeStatus.ACTIVE;
         lockOtherTrees(treeElement);
       }
