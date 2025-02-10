@@ -27,6 +27,7 @@ const ARTIFACTS: Artifact[] = [
     { id: 17, name: '神盾霜火', icon: 'icons/artifacts/17.jpg' },
     { id: 18, name: '蒼炎御守刀', icon: 'icons/artifacts/18.jpg' },
     { id: 19, name: 'ウルトラゼロランス', icon: 'icons/artifacts/19.jpg' },
+    { id: 20, name: 'ウルティメイトイージス', icon: 'icons/artifacts/20.jpg' },
 ];
 
 const EMPTY_ICON = '<span class="icon empty"></span>';
