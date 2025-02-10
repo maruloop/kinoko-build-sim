@@ -378,6 +378,10 @@ function renderBackTalentsTree(jobTalentGraph: JobTalentGraph, position: TalentD
       const levelControl = document.createElement('div');
       levelControl.classList.add('level-control');
 
+      const decrement10Button = document.createElement('button');
+      decrement10Button.textContent = '-10';
+      decrement10Button.classList.add('talent-button', 'decrement10');
+
       const decrementButton = document.createElement('button');
       decrementButton.textContent = '-';
       decrementButton.classList.add('talent-button', 'decrement');
@@ -390,27 +394,51 @@ function renderBackTalentsTree(jobTalentGraph: JobTalentGraph, position: TalentD
       incrementButton.textContent = '+';
       incrementButton.classList.add('talent-button', 'increment');
 
-      addSafeEventListener(decrementButton, 'click', (event) => {
-        const target = event.target as HTMLElement;
+      const increment10Button = document.createElement('button');
+      increment10Button.textContent = '+10';
+      increment10Button.classList.add('talent-button', 'increment10');
 
-        if(target.classList.contains('decrement')){
-          const nodeElement = target.closest('.talent-node')! as HTMLElement;
-          handleLevelDown(nodeElement, jobTalentGraph);
+      const adjustLevel = (nodeElement: HTMLElement, jobTalentGraph: JobTalentGraph, delta: number) => {
+        const currentLevel = parseInt(nodeElement.dataset.currentLevel || '0');
+        const maxLevel = parseInt(nodeElement.dataset.maxLevel || '0');
+        const newLevel = Math.max(0, Math.min(maxLevel, currentLevel + delta));
+
+        if (newLevel > currentLevel) {
+          for (let i = currentLevel; i < newLevel; i++) {
+            handleLevelUp(nodeElement, jobTalentGraph);
+          }
+        } else if (newLevel < currentLevel) {
+          for (let i = currentLevel; i > newLevel; i--) {
+            handleLevelDown(nodeElement, jobTalentGraph);
+          }
         }
+      };
+
+      addSafeEventListener(decrement10Button, 'click', (event) => {
+        const nodeElement = (event.target as HTMLElement).closest('.talent-node')! as HTMLElement;
+        adjustLevel(nodeElement, jobTalentGraph, -10);
+      });
+
+      addSafeEventListener(decrementButton, 'click', (event) => {
+        const nodeElement = (event.target as HTMLElement).closest('.talent-node')! as HTMLElement;
+        adjustLevel(nodeElement, jobTalentGraph, -1);
       });
 
       addSafeEventListener(incrementButton, 'click', (event) => {
-        const target = event.target as HTMLElement;
-
-        if (target.classList.contains('increment')) {
-          const nodeElement = target.closest('.talent-node')! as HTMLElement;
-          handleLevelUp(nodeElement, jobTalentGraph);
-        }
+        const nodeElement = (event.target as HTMLElement).closest('.talent-node')! as HTMLElement;
+        adjustLevel(nodeElement, jobTalentGraph, 1);
       });
 
+      addSafeEventListener(increment10Button, 'click', (event) => {
+        const nodeElement = (event.target as HTMLElement).closest('.talent-node')! as HTMLElement;
+        adjustLevel(nodeElement, jobTalentGraph, 10);
+      });
+
+      levelControl.appendChild(decrement10Button);
       levelControl.appendChild(decrementButton);
       levelControl.appendChild(levelDisplay);
       levelControl.appendChild(incrementButton);
+      levelControl.appendChild(increment10Button);
 
       nodeElement.appendChild(nameElement);
       nodeElement.appendChild(levelControl);

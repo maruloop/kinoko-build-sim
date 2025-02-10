@@ -75,6 +75,7 @@
     grid-auto-columns: minmax(150px, 200px);
     justify-content: start;
     align-items: start;
+    width: max-content;
 }
 .talent-grid[data-tree-status="locked"] {
     opacity: 0.4;
