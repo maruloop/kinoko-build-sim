@@ -466,6 +466,13 @@ function handleLevelUp(nodeElement: HTMLElement, graph: JobTalentGraph) {
     lockOtherTrees(treeElement);
   }
 
+  const completedTreesCount = Array.from(document.querySelectorAll<HTMLElement>('.talent-grid'))
+  .filter(tree => tree.dataset.treeStatus === TreeStatus.COMPLETED).length;
+  const hasFourCompletedTrees = completedTreesCount >= 4;
+  if(isEndNode(nodeElement) && hasFourCompletedTrees) {
+    return;
+  }
+
   if (currentLevel < maxLevel) {
     const newLevel = currentLevel + 1;
     nodeElement.dataset.currentLevel = newLevel.toString();
