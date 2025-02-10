@@ -10,6 +10,7 @@ import { initMountsArtifactsBackAccessoriesUI } from './mounts-artifacts-back-ac
 import { initAvianUI } from './avians';
 import { initSoulsUI } from './souls';
 import { initAwakeningUI } from './awakening';
+import { initBackTalentsUI } from './back-talents';
 
 export function updateAllUI() {
   initSummaryUI();
@@ -24,4 +25,5 @@ export function updateAllUI() {
   initMountsArtifactsBackAccessoriesUI();
   initAvianUI();
   initSoulsUI();
+  initBackTalentsUI();
 }
