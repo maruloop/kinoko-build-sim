@@ -461,16 +461,16 @@ function handleLevelUp(nodeElement: HTMLElement, graph: JobTalentGraph) {
     return;
   }
 
-  if (treeElement.dataset.treeStatus === TreeStatus.UNLOCKED) {
-    treeElement.dataset.treeStatus = TreeStatus.ACTIVE;
-    lockOtherTrees(treeElement);
-  }
-
   const completedTreesCount = Array.from(document.querySelectorAll<HTMLElement>('.talent-grid'))
   .filter(tree => tree.dataset.treeStatus === TreeStatus.COMPLETED).length;
   const hasFourCompletedTrees = completedTreesCount >= 4;
   if(isEndNode(nodeElement) && hasFourCompletedTrees) {
     return;
+  }
+
+  if (treeElement.dataset.treeStatus === TreeStatus.UNLOCKED) {
+    treeElement.dataset.treeStatus = TreeStatus.ACTIVE;
+    lockOtherTrees(treeElement);
   }
 
   if (currentLevel < maxLevel) {
