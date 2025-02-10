@@ -1,0 +1,186 @@
+#back-talenents-tree-selection-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8vw, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.back-talenents-job-panel {
+    position: relative;
+    border: 1px solid #aaa;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #333;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.back-talenents-job-panel .dot {
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+}
+
+.back-talenents-job-panel .dot.top {
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #E57373;
+}
+
+.back-talenents-job-panel .dot.left {
+    top: 75%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    background: #f8eb72;
+}
+
+.back-talenents-job-panel .dot.right {
+    top: 75%;
+    right: 25%;
+    transform: translate(50%, -50%);
+    background: #64B5F6;
+}
+
+.talent-radio {
+    display: none;
+}
+
+.talent-radio:checked+.dot {
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.3s ease;
+}
+
+#back-talents-tree-container {
+    overflow-x: scroll;
+    padding: 10px 0;
+    white-space: nowrap;
+    scrollbar-width: thin;
+}
+
+.talent-grid {
+    display: none;
+    gap: 10px;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(150px, 200px);
+    justify-content: start;
+    align-items: start;
+}
+.talent-grid[data-tree-status="locked"] {
+    opacity: 0.4;
+    pointer-events: none; /* クリック無効化 */
+}
+
+.talent-grid[data-tree-status="active"] {
+border: 2px solid #4caf50;
+box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+}
+
+.talent-grid[data-tree-status="completed"] {
+border: 2px solid #fbc02d;
+background-color: #fff8e1;
+}
+
+.talent-grid[data-tree-status="unlocked"] {
+cursor: pointer;
+transition: transform 0.3s ease;
+}
+
+
+#back-talents-container:has(#jobTalent-1-top:checked) #jobTalentGraph-1-top,
+#back-talents-container:has(#jobTalent-1-right:checked) #jobTalentGraph-1-right,
+#back-talents-container:has(#jobTalent-1-left:checked) #jobTalentGraph-1-left,
+#back-talents-container:has(#jobTalent-2-top:checked) #jobTalentGraph-2-top,
+#back-talents-container:has(#jobTalent-2-right:checked) #jobTalentGraph-2-right,
+#back-talents-container:has(#jobTalent-2-left:checked) #jobTalentGraph-2-left,
+#back-talents-container:has(#jobTalent-3-top:checked) #jobTalentGraph-3-top,
+#back-talents-container:has(#jobTalent-3-right:checked) #jobTalentGraph-3-right,
+#back-talents-container:has(#jobTalent-3-left:checked) #jobTalentGraph-3-left,
+#back-talents-container:has(#jobTalent-4-top:checked) #jobTalentGraph-4-top,
+#back-talents-container:has(#jobTalent-4-right:checked) #jobTalentGraph-4-right,
+#back-talents-container:has(#jobTalent-4-left:checked) #jobTalentGraph-4-left {
+    display: grid;
+}
+
+.talent-node {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    font-size: clamp(0.8rem, 1vw, 1.2rem);
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.talent-node[data-current-level="0"] {
+    background-color: #e0e0e0;
+    border: 1px solid #bbb;
+    color: #666;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.talent-node.right[data-current-level]:not([data-current-level="0"]) {
+    background-color: #64B5F6;
+    border: 1px solid #ddd;
+    color: #000;
+}
+
+.talent-node.left[data-current-level]:not([data-current-level="0"]) {
+    background: #f8eb72;
+    border: 1px solid #ddd;
+    color: #000;
+}
+
+.talent-node.top[data-current-level]:not([data-current-level="0"]) {
+    background: #E57373;
+    border: 1px solid #ddd;
+    color: #000;
+}
+
+.talent-node:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+.talent-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.talent-button {
+    padding: 4px 8px;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.talent-button:hover {
+    background-color: #bbb;
+}
+.level-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+.level-display {
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 4px 0;
+}

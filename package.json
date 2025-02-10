@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@resvg/resvg-wasm": "^2.6.2",
+    "lz-string": "^1.5.0",
     "satori": "^0.12.0",
     "yoga-wasm-web": "^0.3.3"
   }

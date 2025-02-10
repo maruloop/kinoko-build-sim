@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="./css/mounts.css">
     <link rel="stylesheet" href="./css/souls.css">
     <link rel="stylesheet" href="./css/avian.css">
+    <link rel="stylesheet" href="./css/back-talents.css">
 
     <meta property="og:title" content="(非公式)キノコ伝説ビルドシミュレーター">
     <meta property="og:description" content="ビルドを作って共有しよう！">
@@ -184,8 +185,14 @@
         </section>
 
         <section id="back-talents">
-            <h2>背飾り能力</h2>
-            <p>背飾り能力を選択します。</p>
+            <div class="section-header">
+                <h2>背飾り能力</h2>
+                <button id="reset-back-talents-btn" class="reset-btn" title="背飾り能力をリセット">↺</button>
+            </div>
+            <div id="back-talents-container">
+                <div id="back-talenents-tree-selection-container"></div>
+                <div id="back-talents-tree-container"></div>
+            </div>
         </section>
 
         <section id="enchantments">
