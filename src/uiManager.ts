@@ -11,6 +11,7 @@ import { initAvianUI } from './avians';
 import { initSoulsUI } from './souls';
 import { initAwakeningUI } from './awakening';
 import { initBackTalentsUI } from './back-talents';
+import { initShipUI } from './ship';
 
 export function updateAllUI() {
   initSummaryUI();
@@ -26,4 +27,5 @@ export function updateAllUI() {
   initAvianUI();
   initSoulsUI();
   initBackTalentsUI();
+  initShipUI();
 }
