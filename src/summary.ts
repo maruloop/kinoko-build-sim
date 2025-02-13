@@ -1,38 +1,106 @@
 import { addSafeEventListener } from './helper';
 
 const TITLE_QUERY_KEY = 'title';
+const DESCRIPTION_QUERY_KEY = 'description';
 
-function updateURL(title: string) {
-    const params = new URLSearchParams(window.location.search);
+function updateUrlTitle(title: string) {
+  const params = new URLSearchParams(window.location.search);
+
+  if (title != '') {
     params.set(TITLE_QUERY_KEY, title);
-    const newPath = params.toString() ? '?' + params.toString() : window.location.pathname;
-    history.replaceState(null, '', newPath);
+  } else {
+    params.delete(TITLE_QUERY_KEY);
+  }
+  const newPath = params.toString() ? '?' + params.toString() : window.location.pathname;
+  history.replaceState(null, '', newPath);
+}
+
+function updateUrlDescription(description: string) {
+  const params = new URLSearchParams(window.location.search);
+  if (description != '') {
+    params.set(DESCRIPTION_QUERY_KEY, description);
+  } else {
+    params.delete(DESCRIPTION_QUERY_KEY);
+  }
+  const newPath = params.toString() ? '?' + params.toString() : window.location.pathname;
+  history.replaceState(null, '', newPath);
 }
 
 function loadSummaryFromURL() {
-    const input = document.getElementById('build-title');
-    const params = new URLSearchParams(window.location.search);
-    const existingTitle = params.get(TITLE_QUERY_KEY);
-    if (existingTitle) {
-        input.value = sanitizeTitle(decodeURIComponent(existingTitle));
-    }
+  const params = new URLSearchParams(window.location.search);
+  const existingTitle = params.get(TITLE_QUERY_KEY);
+  const title = document.getElementById('build-title') as HTMLInputElement;
+  if (existingTitle && title) {
+    title.value = sanitizeTitle(decodeURIComponent(existingTitle));
+  }
+  const existingDescription = params.get(DESCRIPTION_QUERY_KEY);
+  const description = document.getElementById('build-description') as HTMLTextAreaElement;
+  if (existingDescription && description) {
+    description.value = sanitizeTitle(decodeURIComponent(existingDescription));
+  }
 }
 
-function sanitizeTitle(value) {
-    return value.replace(/[<>&"'`]/g, '');
+function renderTitlePanel() {
+  const container = document.getElementById('summary-info-container') as HTMLElement;
+  container.innerHTML = '';
+
+  const form = document.createElement("form");
+  form.id = "title-form";
+
+  const title = document.createElement("input");
+  title.type = "text";
+  title.id = "build-title";
+  title.name = "title";
+  title.placeholder = "ビルド名";
+
+  addSafeEventListener(title, 'input', () => {
+    const sanitizedValue = sanitizeTitle(title.value);
+
+    if (title.value !== sanitizedValue) {
+      title.value = sanitizedValue;
+    }
+    const titleString = title.value.trim();
+    updateUrlTitle(titleString);
+  });
+
+  const description = document.createElement("textarea");
+  description.id = "build-description";
+  description.name = "description";
+  description.placeholder = "ビルドの説明を入力...";
+  description.rows = 4;
+  description.cols = 50;
+
+  addSafeEventListener(description, 'input', () => {
+    const sanitizedValue = description.value.trim();
+    updateUrlDescription(sanitizedValue);
+  });
+
+  form.appendChild(title);
+  form.appendChild(description);
+  container.appendChild(form);
+}
+
+function sanitizeTitle(value: string) {
+  return value.replace(/[<>&"'`]/g, '');
 };
 
+function renderJobPanel() { }
+function renderEquipmentPanel() { }
+function renderSkillPanel() { }
+function renderPalPanel() { }
+function renderRelicPanel() { }
+function renderStatuePanel() { }
+function renderBackTalentsPanel() { }
+function renderEnchantmentPanel() { }
+function renderAwakeningPanel() { }
+function renderMountArtifactBackAccessoryPanel() { }
+function renderAvianPanel() { }
+function renderSoulPanel() { }
+function renderShipPanel() { }
+function renderStarHeroPanel() { }
+
+
 export function initSummaryUI() {
-    const input = document.getElementById('build-title');
-
-    loadSummaryFromURL();
-    addSafeEventListener(input, 'input', () => {
-        const sanitizedValue = sanitizeTitle(input.value);
-
-        if (input.value !== sanitizedValue) {
-            input.value = sanitizedValue;
-        }
-        const title = input.value.trim();
-        updateURL(title);
-    });
+  renderTitlePanel();
+  loadSummaryFromURL();
 }
