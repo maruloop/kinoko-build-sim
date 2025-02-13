@@ -3,39 +3,41 @@ import { addSafeEventListener } from './helper';
 
 const QUERY_KEY = 'star-hero';
 const EMPTY_ICON = '<span class="icon empty"></span>';
+const MAX_COST = 10;
 
 interface StarHero {
   id: number;
   name: string;
   icon: string;
+  cost: number;
 }
 
 const starHeroes: StarHero[] = [
-  {id: 1, name:'神聖なる戦神', icon: 'icons/star_heroes/1.jpg'},
-  {id: 2, name:'嵐の支配者', icon: 'icons/star_heroes/2.jpg'},
-  {id: 3, name:'万獣の王', icon: 'icons/star_heroes/3.jpg'},
-  {id: 4, name:'聖なる守護者', icon: 'icons/star_heroes/4.jpg'},
-  {id: 5, name:'万願の灯神', icon: 'icons/star_heroes/5.jpg'},
-  {id: 6, name:'霊報の使者', icon: 'icons/star_heroes/6.jpg'},
-  {id: 7, name:'知恵の導師', icon: 'icons/star_heroes/7.jpg'},
-  {id: 8, name:'時守りの妖精', icon: 'icons/star_heroes/8.jpg'},
-  {id: 9, name:'光輝の騎士', icon: 'icons/star_heroes/9.jpg'},
-  {id: 10, name:'獣霊の庇護者', icon: 'icons/star_heroes/10.jpg'},
-  {id: 11, name:'虚空の導き手', icon: 'icons/star_heroes/11.jpg'},
-  {id: 12, name:'秩序の守護者', icon: 'icons/star_heroes/12.jpg'},
-  {id: 13, name:'生態系の守護者', icon: 'icons/star_heroes/13.jpg'},
-  {id: 14, name:'環境の守護者', icon: 'icons/star_heroes/14.jpg'},
-  {id: 15, name:'知識の書霊', icon: 'icons/star_heroes/15.jpg'},
-  {id: 16, name:'無畏の飛鳥', icon: 'icons/star_heroes/16.jpg'},
-  {id: 17, name:'活力の若将軍', icon: 'icons/star_heroes/17.jpg'},
-  {id: 18, name:'先鋒ウニ', icon: 'icons/star_heroes/18.jpg'},
-  {id: 19, name:'忠義な衛兵', icon: 'icons/star_heroes/19.jpg'},
-  {id: 20, name:'繁栄の使者', icon: 'icons/star_heroes/20.jpg'},
-  {id: 21, name:'豊穣の使者', icon: 'icons/star_heroes/21.jpg'},
-  {id: 22, name:'天穹の監視者', icon: 'icons/star_heroes/22.jpg'},
-  {id: 23, name:'勇敢な魂騎士', icon: 'icons/star_heroes/23.jpg'},
-  {id: 24, name:'岩武の騎士', icon: 'icons/star_heroes/24.jpg'},
-  {id: 25, name:'影の守護霊', icon: 'icons/star_heroes/25.jpg'},
+  { id: 1, name: '神聖なる戦神', icon: 'icons/star_heroes/1.jpg', cost: 4 },
+  { id: 2, name: '嵐の支配者', icon: 'icons/star_heroes/2.jpg', cost: 4 },
+  { id: 3, name: '万獣の王', icon: 'icons/star_heroes/3.jpg', cost: 4 },
+  { id: 4, name: '聖なる守護者', icon: 'icons/star_heroes/4.jpg', cost: 4 },
+  { id: 5, name: '万願の灯神', icon: 'icons/star_heroes/5.jpg', cost: 4 },
+  { id: 6, name: '霊報の使者', icon: 'icons/star_heroes/6.jpg', cost: 3 },
+  { id: 7, name: '知恵の導師', icon: 'icons/star_heroes/7.jpg', cost: 3 },
+  { id: 8, name: '時守りの妖精', icon: 'icons/star_heroes/8.jpg', cost: 3 },
+  { id: 9, name: '光輝の騎士', icon: 'icons/star_heroes/9.jpg', cost: 3 },
+  { id: 10, name: '獣霊の庇護者', icon: 'icons/star_heroes/10.jpg', cost: 3 },
+  { id: 11, name: '虚空の導き手', icon: 'icons/star_heroes/11.jpg', cost: 3 },
+  { id: 12, name: '秩序の守護者', icon: 'icons/star_heroes/12.jpg', cost: 3 },
+  { id: 13, name: '生態系の守護者', icon: 'icons/star_heroes/13.jpg', cost: 3 },
+  { id: 14, name: '環境の守護者', icon: 'icons/star_heroes/14.jpg', cost: 3 },
+  { id: 15, name: '知識の書霊', icon: 'icons/star_heroes/15.jpg', cost: 2 },
+  { id: 16, name: '無畏の飛鳥', icon: 'icons/star_heroes/16.jpg', cost: 2 },
+  { id: 17, name: '活力の若将軍', icon: 'icons/star_heroes/17.jpg', cost: 2 },
+  { id: 18, name: '先鋒ウニ', icon: 'icons/star_heroes/18.jpg', cost: 2 },
+  { id: 19, name: '忠義な衛兵', icon: 'icons/star_heroes/19.jpg', cost: 2 },
+  { id: 20, name: '繁栄の使者', icon: 'icons/star_heroes/20.jpg', cost: 2 },
+  { id: 21, name: '豊穣の使者', icon: 'icons/star_heroes/21.jpg', cost: 2 },
+  { id: 22, name: '天穹の監視者', icon: 'icons/star_heroes/22.jpg', cost: 2 },
+  { id: 23, name: '勇敢な魂騎士', icon: 'icons/star_heroes/23.jpg', cost: 2 },
+  { id: 24, name: '岩武の騎士', icon: 'icons/star_heroes/24.jpg', cost: 2 },
+  { id: 25, name: '影の守護霊', icon: 'icons/star_heroes/25.jpg', cost: 2 },
 ];
 
 function renderStarHeroSelection() {
@@ -67,8 +69,10 @@ function toggleStarHero(starHero: StarHero) {
     const emptySlot = document.querySelector(
       '.star-hero-slot:not([data-star-hero-id])'
     ) as HTMLDivElement;
+    const totalCostDisplay = document.getElementById('star-hero-total-cost') as HTMLSpanElement;
+    const currentTotal = parseInt(totalCostDisplay.dataset.total || '0', 10);
 
-    if (emptySlot) {
+    if (emptySlot && currentTotal + starHero.cost <= MAX_COST) {
       emptySlot.dataset.starHeroId = String(starHero.id);
       emptySlot.innerHTML = '';
       const starHeroImage = document.createElement('img');
@@ -76,6 +80,7 @@ function toggleStarHero(starHero: StarHero) {
       starHeroImage.alt = starHero.name;
       starHeroImage.classList.add('icon');
       starHeroImage.dataset.palId = String(starHero.id);
+      emptySlot.dataset.cost = String(starHero.cost);
 
       addSafeEventListener(starHeroImage, 'click', () => {
         const slot = parseInt(emptySlot.dataset.slot || '0', 10);
@@ -85,21 +90,33 @@ function toggleStarHero(starHero: StarHero) {
       emptySlot.appendChild(starHeroImage);
       updateURL();
       renderStarHeroSelection();
+      updateTotalCost();
     }
   }
 }
 
+function updateTotalCost() {
+  const selected = document.querySelectorAll<HTMLDivElement>('.star-hero-slot');
+  const totalCost = Array.from(selected).reduce((sum, item) => {
+    return sum + parseInt(item.dataset.cost || '0', 10);
+  }, 0);
+  const totalCostDisplay = document.getElementById('star-hero-total-cost') as HTMLSpanElement;
+  totalCostDisplay.textContent = String(totalCost);
+  totalCostDisplay.dataset.total = String(totalCost);
+}
 
 function removeStarHero(slot: number) {
   const slotElement = document.querySelector(`.star-hero-slot[data-slot="${slot}"]`) as HTMLDivElement;
 
   if (slotElement) {
     slotElement.removeAttribute('data-star-hero-id');
+    slotElement.dataset.cost = '0';
     slotElement.innerHTML = EMPTY_ICON;
   }
 
   renderStarHeroSelection();
   updateURL();
+  updateTotalCost();
 }
 
 function updateStarHeroSelectionUI() {
@@ -154,7 +171,12 @@ function renderEmptyStarHeroSlots() {
   selectedStarHeroesList.appendChild(mainSlot);
   selectedStarHeroesList.appendChild(sub1Slot);
   selectedStarHeroesList.appendChild(sub2Slot);
+
+  const totalCostDisplay = document.getElementById('star-hero-total-cost') as HTMLSpanElement;
+  totalCostDisplay.textContent = '0';
+  totalCostDisplay.dataset.total = '0'
 }
+
 function loadStarHeroFromURL() {
   const params = new URLSearchParams(window.location.search);
   const starHeroString = params.get(QUERY_KEY);
@@ -193,6 +215,7 @@ function loadStarHeroFromURL() {
     }
   });
   updateStarHeroSelectionUI();
+  updateTotalCost();
 }
 
 
