@@ -12,6 +12,7 @@ import { initSoulsUI } from './souls';
 import { initAwakeningUI } from './awakening';
 import { initBackTalentsUI } from './back-talents';
 import { initShipUI } from './ship';
+import { initStarHeroesUI } from './star-hero';
 
 export function updateAllUI() {
   initSummaryUI();
@@ -28,4 +29,5 @@ export function updateAllUI() {
   initSoulsUI();
   initBackTalentsUI();
   initShipUI();
+  initStarHeroesUI();
 }

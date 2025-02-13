@@ -1,0 +1,11 @@
+.star-hero-slot.main span,
+.star-hero-slot.main img {
+  box-shadow: 0 0 4px 4px rgba(255, 0, 0, 0.6);
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.star-hero-slot.sub span,
+.star-hero-slot.sub img {
+  box-shadow: 0 0 4px 4px rgba(0, 0, 255, 0.6);
+  background-color: rgba(0, 0, 255, 0.1);
+}

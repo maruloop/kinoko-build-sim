@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="./css/souls.css">
     <link rel="stylesheet" href="./css/avian.css">
     <link rel="stylesheet" href="./css/back-talents.css">
+    <link rel="stylesheet" href="./css/star-hero.css">
 
     <meta property="og:title" content="(非公式)キノコ伝説ビルドシミュレーター">
     <meta property="og:description" content="ビルドを作って共有しよう！">
@@ -52,7 +53,7 @@
         <div class="tab" data-target="#avian">ペット</div>
         <div class="tab" data-target="#souls">武魂</div>
         <div class="tab" data-target="#ship">船</div>
-        <div class="tab" data-target="#star-hero">星陣</div>
+        <div class="tab" data-target="#star-hero">星将</div>
     </div>
 
     <div class="title-area">
@@ -333,9 +334,19 @@
 
         <section id="star-hero">
             <div class="section-header">
-                <h2>星陣</h2>
+                <h2>星将</h2>
+                <button id="reset-star-heroes-btn" class="reset-btn" title="星将をリセット">↺</button>
             </div>
             <div id="star-hero-container">
+                <div class="skills-selected">
+                    <h3>選択済み星将</h3>
+                    <div id="selected-star-hero" class="selected-grid"></div>
+                </div>
+
+                <div class="skills-pool">
+                    <h3>星将一覧</h3>
+                    <div id="star-hero-list" class="pool-grid"></div>
+                </div>
             </div>
         </section>
     </div>
