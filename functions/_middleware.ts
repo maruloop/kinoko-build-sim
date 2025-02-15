@@ -1,5 +1,5 @@
 /// <reference types="@cloudflare/workers-types" />
-import LZString from 'https://esm.sh/lz-string';
+import LZString from 'lz-string';
 
 function escapeHTML(str: string): string {
   return str.replace(/[&<>"']/g, (match) => {
