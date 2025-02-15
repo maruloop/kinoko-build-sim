@@ -99,8 +99,21 @@ function renderSoulPanel() { }
 function renderShipPanel() { }
 function renderStarHeroPanel() { }
 
-
 export function initSummaryUI() {
   renderTitlePanel();
+  renderJobPanel();
+  renderEquipmentPanel();
+  renderSkillPanel();
+  renderPalPanel();
+  renderRelicPanel();
+  renderStatuePanel();
+  renderBackTalentsPanel();
+  renderEnchantmentPanel();
+  renderAwakeningPanel();
+  renderMountArtifactBackAccessoryPanel();
+  renderAvianPanel();
+  renderSoulPanel();
+  renderShipPanel();
+  renderStarHeroPanel();
   loadSummaryFromURL();
 }

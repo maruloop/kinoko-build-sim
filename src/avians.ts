@@ -157,12 +157,12 @@ function handleStatusClick(event: Event) {
     if (target.classList.contains('avian-status-item')) {
         if (!target.classList.contains('selected') && currentTotal < MAX_STATUS) {
             target.classList.toggle('selected');
-            updateURL(null);
+            updateURL();
             totalCountDisplay.dataset.total = String(currentTotal + 1);
             totalCountDisplay.textContent = String(currentTotal + 1);
         } else if (target.classList.contains('selected')) {
             target.classList.toggle('selected');
-            updateURL(null);
+            updateURL();
             totalCountDisplay.dataset.total = String(currentTotal - 1);
             totalCountDisplay.textContent = String(currentTotal - 1);
         }
@@ -194,7 +194,7 @@ function toggleAvian(avian: Avian) {
     if (selectedAvianId === String(avian.id)) {
         avianSlot.removeAttribute('data-avian-id');
         avianSlot.innerHTML = EMPTY_ICON;
-        updateURL(null);
+        updateURL();
     } else {
         avianSlot.dataset.avianId = String(avian.id);
         avianSlot.innerHTML = '';
@@ -208,11 +208,11 @@ function toggleAvian(avian: Avian) {
             avianSlot.removeAttribute('data-avian-id');
             avianSlot.innerHTML = EMPTY_ICON;
             updateAvianSelectionUI();
-            updateURL(null);
+            updateURL();
         });
 
         avianSlot.appendChild(avianImage);
-        updateURL(avian.id);
+        updateURL();
     }
 
     updateAvianSelectionUI();
@@ -231,8 +231,8 @@ function updateAvianSelectionUI() {
     });
 }
 
-function updateURL(avianId: number | null) {
-    updateAvianURL(avianId);
+function updateURL() {
+    updateAvianURL();
     updateStatusURL();
 }
 
@@ -252,11 +252,13 @@ function updateStatusURL() {
     history.replaceState(null, '', newPath);
 }
 
-function updateAvianURL(avianId: number | null) {
+function updateAvianURL() {
     const params = new URLSearchParams(window.location.search);
+    const avianSlot = document.getElementById('selected-avian') as HTMLDivElement;
+    const selectedAvianId = avianSlot.dataset.avianId;
 
-    if (avianId !== null) {
-        params.set(QUERY_KEY, String(avianId));
+    if (selectedAvianId) {
+        params.set(QUERY_KEY, String(selectedAvianId));
     } else {
         params.delete(QUERY_KEY);
     }
