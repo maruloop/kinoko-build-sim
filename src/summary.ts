@@ -1,5 +1,6 @@
 import { addSafeEventListener } from './helper';
 import { showResetModal } from './resetModal';
+import LZString from 'lz-string';
 
 const TITLE_QUERY_KEY = 'title';
 const DESCRIPTION_QUERY_KEY = 'description';
@@ -21,7 +22,8 @@ function updateUrlTitle(title: string) {
 function updateUrlDescription(description: string) {
   const params = new URLSearchParams(window.location.search);
   if (description != '') {
-    params.set(DESCRIPTION_QUERY_KEY, description);
+    const compressedDiscription = LZString.compressToEncodedURIComponent(description);
+    params.set(DESCRIPTION_QUERY_KEY, compressedDiscription);
   } else {
     params.delete(DESCRIPTION_QUERY_KEY);
   }
@@ -37,9 +39,10 @@ function loadSummaryFromURL() {
     title.value = sanitizeTitle(decodeURIComponent(existingTitle));
   }
   const existingDescription = params.get(DESCRIPTION_QUERY_KEY);
-  const description = document.getElementById('build-description') as HTMLTextAreaElement;
-  if (existingDescription && description) {
-    description.value = sanitizeTitle(decodeURIComponent(existingDescription));
+  const descriptionElement = document.getElementById('build-description') as HTMLTextAreaElement;
+  if (existingDescription && descriptionElement) {
+    const description = LZString.decompressFromEncodedURIComponent(existingDescription);
+    descriptionElement.value = sanitizeTitle(description);
   }
 }
 
