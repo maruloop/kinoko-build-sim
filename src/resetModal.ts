@@ -16,7 +16,6 @@ document.body.appendChild(modal);
 const confirmYesBtn = modal.querySelector('#confirm-yes') as HTMLButtonElement;
 const confirmNoBtn = modal.querySelector('#confirm-no') as HTMLButtonElement;
 
-// 1つでも配列として受け取る
 export function showResetModal(queryKeys: string[], itemName: string) {
   resetTargetKeys = queryKeys;
   modal.querySelector('p')!.textContent = `${itemName}をリセットしますか？`;
@@ -29,9 +28,13 @@ function closeModal() {
 }
 
 function resetQueryParameter() {
-  const params = new URLSearchParams(window.location.search);
+  const params: URLSearchParams = new URLSearchParams(window.location.search);
 
-  resetTargetKeys.forEach(key => params.delete(key));
+  if (resetTargetKeys.length > 0) {
+    resetTargetKeys.forEach(key => params.delete(key));
+  } else {
+    Array.from(params.keys()).forEach(key => params.delete(key));
+  }
 
   const newPath = params.toString() ? '?' + params.toString() : window.location.pathname;
   history.replaceState(null, '', newPath);

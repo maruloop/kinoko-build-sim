@@ -1,4 +1,5 @@
 import { addSafeEventListener } from './helper';
+import { showResetModal } from './resetModal';
 
 const TITLE_QUERY_KEY = 'title';
 const DESCRIPTION_QUERY_KEY = 'description';
@@ -124,4 +125,9 @@ export function initSummaryUI() {
   renderShipPanel();
   renderStarHeroPanel();
   loadSummaryFromURL();
+
+      const resetAllBtn = document.getElementById('reset-summary-btn') as HTMLButtonElement;
+      addSafeEventListener(resetAllBtn, 'click', () => {
+          showResetModal([], 'ビルド全体');
+      });
 }
