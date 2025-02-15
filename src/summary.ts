@@ -2,6 +2,8 @@ import { addSafeEventListener } from './helper';
 
 const TITLE_QUERY_KEY = 'title';
 const DESCRIPTION_QUERY_KEY = 'description';
+const MAX_DESCRIPTION = 500;
+const MAX_TITLE = 50;
 
 function updateUrlTitle(title: string) {
   const params = new URLSearchParams(window.location.search);
@@ -52,6 +54,7 @@ function renderTitlePanel() {
   title.id = "build-title";
   title.name = "title";
   title.placeholder = "ビルド名";
+  title.maxLength = MAX_TITLE;
 
   addSafeEventListener(title, 'input', () => {
     const sanitizedValue = sanitizeTitle(title.value);
@@ -71,7 +74,12 @@ function renderTitlePanel() {
   description.cols = 50;
 
   addSafeEventListener(description, 'input', () => {
-    const sanitizedValue = description.value.trim();
+    let sanitizedValue = description.value.trim();
+
+    if (sanitizedValue.length > MAX_DESCRIPTION) {
+      sanitizedValue = sanitizedValue.slice(0, MAX_DESCRIPTION);
+      description.value = sanitizedValue;
+    }
     updateUrlDescription(sanitizedValue);
   });
 
