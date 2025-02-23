@@ -30,6 +30,7 @@ const BACK_ACCESSORIES: BackAccessory[] = [
     { id: 20, name: '骨竜錠', icon: 'icons/back_accessories/20.jpg' },
     { id: 21, name: '雪影幽霊', icon: 'icons/back_accessories/21.jpg' },
     { id: 22, name: '光輝の躍進', icon: 'icons/back_accessories/22.jpg' },
+    { id: 23, name: '生死の契約', icon: 'icons/back_accessories/23.jpg' },
 ];
 
 const EMPTY_ICON = '<span class="icon empty"></span>';
