@@ -38,6 +38,8 @@ const starHeroes: StarHero[] = [
   { id: 23, name: '勇敢な魂騎士', icon: 'icons/star_heroes/23.jpg', cost: 2 },
   { id: 24, name: '岩武の騎士', icon: 'icons/star_heroes/24.jpg', cost: 2 },
   { id: 25, name: '影の守護霊', icon: 'icons/star_heroes/25.jpg', cost: 2 },
+  { id: 26, name: 'サクラドリーマー', icon: 'icons/star_heroes/26.jpg', cost: 3 },
+  { id: 27, name: 'ワンレンジャー', icon: 'icons/star_heroes/27.jpg', cost: 4 },
 ];
 
 function renderStarHeroSelection() {
